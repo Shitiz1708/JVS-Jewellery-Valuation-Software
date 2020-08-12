@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons8-contract-50.png</file>
+    <file>icons8-list-50.png</file>
+    <file>icons8-about-50.png</file>
+    <file>icons8-exit-50.png</file>
+    <file>icons8-list-50.png</file>
+    <file>icons8-organization-50.png</file>
+    <file>icons8-password-50.png</file>
+    <file>icons8-ring-50.png</file>
+    <file>icons8-us-dollar-50.png</file>
+    <file>icons8-user-50.png</file>
+  </qresource>
+</RCC>

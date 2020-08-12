@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="images">
+    <file>icons8-surgical-50.png</file>
+  </qresource>
+</RCC>

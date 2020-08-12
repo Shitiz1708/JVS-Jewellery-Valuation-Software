@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>29</width>
+     <height>28</height>
+    </size>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionFirm"/>
+   <addaction name="actionValuer"/>
+   <addaction name="actionGroups"/>
+   <addaction name="actionItems"/>
+   <addaction name="actionMarket_Rates"/>
+   <addaction name="actionValuation"/>
+   <addaction name="actionChange_Password"/>
+   <addaction name="actionAbout"/>
+   <addaction name="actionExit"/>
+   <addaction name="separator"/>
+  </widget>
+  <action name="actionFirm">
+   <property name="icon">
+    <iconset resource="toolbar.qrc">
+     <normaloff>:/icons/icons8-organization-50.png</normaloff>:/icons/icons8-organization-50.png</iconset>
+   </property>
+   <property name="text">
+    <string>Firm</string>
+   </property>
+   <property name="toolTip">
+    <string>Firm</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+F</string>
+   </property>
+  </action>
+  <action name="actionValuer">
+   <property name="icon">
+    <iconset resource="toolbar.qrc">
+     <normaloff>:/icons/icons8-user-50.png</normaloff>:/icons/icons8-user-50.png</iconset>
+   </property>
+   <property name="text">
+    <string>Valuer</string>
+   </property>
+   <property name="toolTip">
+    <string>Valuer</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+V</string>
+   </property>
+  </action>
+  <action name="actionGroups">
+   <property name="icon">
+    <iconset resource="toolbar.qrc">
+     <normaloff>:/icons/icons8-list-50.png</normaloff>:/icons/icons8-list-50.png</iconset>
+   </property>
+   <property name="text">
+    <string>Groups</string>
+   </property>
+   <property name="toolTip">
+    <string>Groups</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+G</string>
+   </property>
+  </action>
+  <action name="actionItems">
+   <property name="icon">
+    <iconset resource="toolbar.qrc">
+     <normaloff>:/icons/icons8-ring-50.png</normaloff>:/icons/icons8-ring-50.png</iconset>
+   </property>
+   <property name="text">
+    <string>Items</string>
+   </property>
+   <property name="toolTip">
+    <string>Items</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+I</string>
+   </property>
+  </action>
+  <action name="actionMarket_Rates">
+   <property name="icon">
+    <iconset resource="toolbar.qrc">
+     <normaloff>:/icons/icons8-us-dollar-50.png</normaloff>:/icons/icons8-us-dollar-50.png</iconset>
+   </property>
+   <property name="text">
+    <string>Market Rates</string>
+   </property>
+   <property name="toolTip">
+    <string>Market Rates</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+M</string>
+   </property>
+  </action>
+  <action name="actionValuation">
+   <property name="text">
+    <string>Valuation</string>
+   </property>
+   <property name="toolTip">
+    <string>Valuation</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+A</string>
+   </property>
+  </action>
+  <action name="actionChange_Password">
+   <property name="icon">
+    <iconset resource="toolbar.qrc">
+     <normaloff>:/icons/icons8-password-50.png</normaloff>:/icons/icons8-password-50.png</iconset>
+   </property>
+   <property name="text">
+    <string>Change Password</string>
+   </property>
+   <property name="toolTip">
+    <string>Change Password</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+P</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="toolbar.qrc">
+     <normaloff>:/icons/icons8-about-50.png</normaloff>:/icons/icons8-about-50.png</iconset>
+   </property>
+   <property name="text">
+    <string>About</string>
+   </property>
+   <property name="toolTip">
+    <string>About</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+B</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset resource="toolbar.qrc">
+     <normaloff>:/icons/icons8-exit-50.png</normaloff>:/icons/icons8-exit-50.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="toolTip">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="toolbar.qrc"/>
+ </resources>
+ <connections/>
+</ui>
