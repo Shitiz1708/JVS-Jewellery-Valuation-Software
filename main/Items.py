@@ -42,7 +42,7 @@ class Ui_Items(QtWidgets.QMainWindow):
         # self.connection_1.close()
     
     def databaseAccess(self):
-        self.connection = sqlite3.connect("MAINDB.db")
+        self.connection = sqlite3.connect("./dbs/MAINDB.db")
         self.cursor=self.connection.cursor()
     
     def default(self):
@@ -59,18 +59,15 @@ class Ui_Items(QtWidgets.QMainWindow):
         sql_command='''SELECT DISTINCT Group_Name FROM Groups;'''
         self.cursor.execute(sql_command)
         res = self.cursor.fetchall()
-        print(res)
         for i in res:
             self.comboBox.addItem(i[0])
 
 
-    # def tableOnClick(self):
 
     def printDB(self):
         sql_command='''SELECT * FROM Items;'''
         self.cursor.execute(sql_command)
         res = self.cursor.fetchall()
-        print(res)
 
     def clear(self):
         self.lineEdit_5.setText(str(""))
@@ -94,14 +91,6 @@ class Ui_Items(QtWidgets.QMainWindow):
         self.lineEdit_7.setText(str(""))
         self.lineEdit_6.setText(str(""))
         self.checkBox.setChecked(False)
-
-
-
-
-    
-    # def printRandom(self):
-    #     print("jbvuwbvvbwvw")
-    #     print(self.tableWidget.currentItem().text())
 
     def tableClicked(self):
         name=self.tableWidget.currentItem().text()
@@ -147,20 +136,6 @@ class Ui_Items(QtWidgets.QMainWindow):
         if(Active==1):
             self.checkBox.setChecked(True)
         
-        
-    
-    # def closeEvent(self, event):
-    #     # if not self.authenticated:
-    #     buttonReply = QMessageBox.question(self, 'PyQt5 message', "Do you want to close the window?", QMessageBox.Yes | QMessageBox.No,QMessageBox.No)
-    #     print(int(buttonReply))
-    #     if buttonReply == QMessageBox.Yes:
-    #         self.close()
-    #     if buttonReply == QMessageBox.No:
-    #         event.ignore()
-
-    # def keyPressEvent(self, event):
-    #     if not event.key() == QtCore.Qt.Key_Escape:
-    #         super(Ui_Valuation, self).keyPressEvent(event)
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -439,52 +414,52 @@ class Ui_Items(QtWidgets.QMainWindow):
         MainWindow.addToolBar(QtCore.Qt.LeftToolBarArea, self.toolBar)
         self.actionFirm = QtWidgets.QAction(MainWindow)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("icons8-organization-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("./icons/icons8-organization-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionFirm.setIcon(icon)
         self.actionFirm.setObjectName("actionFirm")
         self.actionValuer = QtWidgets.QAction(MainWindow)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("icons8-user-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("./icons/icons8-user-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionValuer.setIcon(icon1)
         self.actionValuer.setObjectName("actionValuer")
         self.actionGroups = QtWidgets.QAction(MainWindow)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("icons8-list-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap("./icons/icons8-list-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionGroups.setIcon(icon2)
         self.actionGroups.setObjectName("actionGroups")
         self.actionItems = QtWidgets.QAction(MainWindow)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("icons8-ring-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap("./icons/icons8-ring-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionItems.setIcon(icon3)
         self.actionItems.setObjectName("actionItems")
         self.actionMarket_Rates = QtWidgets.QAction(MainWindow)
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("icons8-us-dollar-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap("./icons/icons8-us-dollar-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionMarket_Rates.setIcon(icon4)
         self.actionMarket_Rates.setObjectName("actionMarket_Rates")
         self.actionValuation = QtWidgets.QAction(MainWindow)
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("icons8-contract-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap("./icons/icons8-contract-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionValuation.setIcon(icon5)
         self.actionValuation.setObjectName("actionValuation")
         self.actionChange_Password = QtWidgets.QAction(MainWindow)
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("icons8-password-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap("./icons/icons8-password-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionChange_Password.setIcon(icon6)
         self.actionChange_Password.setObjectName("actionChange_Password")
         self.actionAbout = QtWidgets.QAction(MainWindow)
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap("icons8-about-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap("./icons/icons8-about-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionAbout.setIcon(icon7)
         self.actionAbout.setObjectName("actionAbout")
         self.actionExit = QtWidgets.QAction(MainWindow)
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap("icons8-exit-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon8.addPixmap(QtGui.QPixmap("./icons/icons8-exit-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionExit.setIcon(icon8)
         self.actionExit.setObjectName("actionExit")
         self.actionSplit_Valuation = QtWidgets.QAction(MainWindow)
         icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap("icons8-separate-document-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon9.addPixmap(QtGui.QPixmap("./icons/icons8-separate-document-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionSplit_Valuation.setIcon(icon9)
         self.actionSplit_Valuation.setObjectName("actionSplit_Valuation")
         self.toolBar.addAction(self.actionFirm)
@@ -623,11 +598,6 @@ class Ui_Items(QtWidgets.QMainWindow):
         self.split=SplitValuation.Ui_Split_Valuation()
         self.split.show()
     def toolbtnpressed(self,a):
-        print(a.text())
-        # switch(a.text()){
-        #     case 'Exit':
-        #     self.ExitTool()
-        # }
         if(a.text()=='Exit'):
             self.ExitTool()
         elif(a.text()=='About'):
@@ -691,7 +661,6 @@ class Ui_Items(QtWidgets.QMainWindow):
         sql_command=format_str.format(name=item_description)
         self.cursor.execute(sql_command)
         res = self.cursor.fetchone()
-        print (res)
         if(res is None):
             format_str='''INSERT INTO Items(Item_Description,Groups,Rates,Min_Wt,Max_Wt,Metal,Purity,Stone_Description,S_Rate,S_Min_Wt,S_Max_Wt,Max_Qty,IsActive) VALUES ('{item_description}','{group}','{rates}',{min_wt},{max_wt},'{metal}',{purity},'{stone}','{rate_as}',{stone_min_weight},{stone_max_weight},{max_quantity},{isActive});'''
             sql_command=format_str.format(item_description=item_description,group=group,rates=rates,min_wt=min_wt,max_wt=max_wt,metal=metal,purity=purity,stone=stone,rate_as=rate_as,stone_min_weight=stone_min_weight,stone_max_weight=stone_max_weight,max_quantity=max_quantity,isActive=isActive)
@@ -821,7 +790,6 @@ class Ui_Items(QtWidgets.QMainWindow):
             return
     
     def search_btn(self):
-        print("A")
         name=self.lineEdit_10.text()
         format_str='''SELECT * FROM Items WHERE Item_Description LIKE "{name}%";'''
         sql_command=format_str.format(name=name)

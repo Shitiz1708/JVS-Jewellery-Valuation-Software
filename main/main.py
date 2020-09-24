@@ -22,7 +22,5 @@ except AttributeError:
 if __name__=='__main__':
     app = QtWidgets.QApplication(sys.argv)
     login = Login.UiLogin()
-    # w = QtWidgets.QMainWindow()
     login.show()
-    # w.show()
     sys.exit(app.exec_())

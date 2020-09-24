@@ -20,7 +20,7 @@ import Valuers
 import Change_Password
 import Products
 import Valuation
-import testselection
+import Selection
 import SplitValuation
 import datetime
 try:
@@ -59,27 +59,15 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		self.connection.close()
 
 	def databaseAccess(self):
-		self.connection = sqlite3.connect("MAINDB.db")
+		self.connection = sqlite3.connect("./dbs/MAINDB.db")
 		self.cursor=self.connection.cursor()
 	
 	def default(self):
 		self.tableWidget_2.setRowCount(0)
 		date=datetime.date.today().strftime('%d-%m-%y')
-		print(date)
+		
 		self.dateEdit.lineEdit().setText(date)
 		self.dateEdit_2.lineEdit().setText(date)
-
-		# sql_command='''SELECT * FROM Rates ;'''
-		# self.cursor.execute(sql_command)
-		# res=self.cursor.fetchall()
-		# for i in res:
-		# 	self.comboBox_5.addItem(str(i[1]))
-		
-		# sql_command='''SELECT * FROM Valuation ;'''
-		# self.cursor.execute(sql_command)
-		# res=self.cursor.fetchall()
-		# for i in res:
-		# 	self.comboBox_6.addItem(str(i[1]))
 		
 		sql_command='''SELECT * FROM Groups ;'''
 		self.cursor.execute(sql_command)
@@ -178,7 +166,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 
 	def fillRowWithStone(self,res,weight_metal,weight_diamond):
 		self.createRow()
-		print(res)
+		
 		self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
 		rate=0
 		if(res[6]=='Gold'):
@@ -218,7 +206,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 
 	def fillRowWithoutStone(self,res,weight):
 		self.createRow()
-		print(res)
+		
 		self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
 		rate=0
 		if(res[6]=='Gold'):
@@ -280,21 +268,21 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 					weights=np.random.dirichlet(np.ones(qty))*gold_wt
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='...' AND Purity=19.2;'''
 					sql_command=format_str.format(metal='Gold',group=self.comboBox_7.lineEdit().text())
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i>j[4] and i<j[5]):
 								set=(j[0],abs(i-(j[4]+j[5])/2))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -339,26 +327,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 						a=(weights_gold[i],weights_diamond[i])
 						weights.append(a)
 					print("*************************************")
-					print(weights)
+					
 					print("*************************************")
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='Diamond'AND Purity=18;'''
 					sql_command=format_str.format(metal='Gold')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i[0]>j[4] and i[0]<j[5] and i[1]>j[10] and i[1]<j[11]):
 								set=(j[0],abs(abs(i[0]-(j[4]+j[5])/2)-abs(i[1]-(j[10]+j[11])/2)))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -394,26 +382,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 					# 	a=(weights_gold[i],weights_diamond[i])
 					# 	weights.append(a)
 					print("*************************************")
-					print(weights_gold)
+					
 					print("*************************************")
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='...';'''
 					sql_command=format_str.format(metal='Gold')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights_gold:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i>j[4] and i<j[5]):
 								set=(j[0],abs(i-(j[4]+j[5])/2))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -451,21 +439,21 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='Diamond' AND Purity=18;'''
 					sql_command=format_str.format(metal='Gold')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i[0]>j[4] and i[0]<j[5] and i[1]>j[10] and i[1]<j[11]):
 								set=(j[0],abs(abs(i[0]-(j[4]+j[5])/2)-abs(i[1]-(j[10]+j[11])/2)))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -510,26 +498,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 					a=(weights_gold[i],weights_diamond[i])
 					weights.append(a)
 				print("*************************************")
-				print(weights)
+				
 				print("*************************************")
 
 				format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='Diamond'AND Purity=18;'''
 				sql_command=format_str.format(metal='Gold')
-				print(sql_command)
+				
 				self.cursor.execute(sql_command)
 				res=self.cursor.fetchall()
-				# print(res)
+				# 
 				for i in weights:
 					list1=[]
 					print(len(res))
-					print(i)
+					
 					for j in res:
 						if(i[0]>j[4] and i[0]<j[5] and i[1]>j[10] and i[1]<j[11]):
 							set=(j[0],abs(abs(i[0]-(j[4]+j[5])/2)-abs(i[1]-(j[10]+j[11])/2)))
-							print(set)
+							
 							list1.append(set)
 					list1.sort(key = lambda x: x[1])
-					# print(list1)
+					# 
 					# print(list1[0][0])
 					if(len(list1)>0):
 						format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -576,26 +564,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 					# 	a=(weights_gold[i],weights_diamond[i])
 					# 	weights.append(a)
 					print("*************************************")
-					print(weights_silver)
+					
 					print("*************************************")
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='...' AND Purity=80;'''
 					sql_command=format_str.format(metal='Silver')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights_silver:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i>j[4] and i<j[5]):
 								set=(j[0],abs(i-(j[4]+j[5])/2))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -639,26 +627,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 						a=(weights_silver[i],weights_diamond[i])
 						weights.append(a)
 					print("*************************************")
-					print(weights)
+					
 					print("*************************************")
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='Diamond'AND Purity=80;'''
 					sql_command=format_str.format(metal='Silver')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i[0]>j[4] and i[0]<j[5] and i[1]>j[10] and i[1]<j[11]):
 								set=(j[0],abs(abs(i[0]-(j[4]+j[5])/2)-abs(i[1]-(j[10]+j[11])/2)))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -694,26 +682,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 					# 	a=(weights_gold[i],weights_diamond[i])
 					# 	weights.append(a)
 					print("*************************************")
-					print(weights_silver)
+					
 					print("*************************************")
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='...';'''
 					sql_command=format_str.format(metal='Silver')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights_silver:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i>j[4] and i<j[5]):
 								set=(j[0],abs(i-(j[4]+j[5])/2))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -751,21 +739,21 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='Diamond' AND Purity=80;'''
 					sql_command=format_str.format(metal='Silver')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i[0]>j[4] and i[0]<j[5] and i[1]>j[10] and i[1]<j[11]):
 								set=(j[0],abs(abs(i[0]-(j[4]+j[5])/2)-abs(i[1]-(j[10]+j[11])/2)))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -810,26 +798,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 					a=(weights_silver[i],weights_diamond[i])
 					weights.append(a)
 				print("*************************************")
-				print(weights)
+				
 				print("*************************************")
 
 				format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='Diamond'AND Purity=80;'''
 				sql_command=format_str.format(metal='Silver')
-				print(sql_command)
+				
 				self.cursor.execute(sql_command)
 				res=self.cursor.fetchall()
-				# print(res)
+				# 
 				for i in weights:
 					list1=[]
 					print(len(res))
-					print(i)
+					
 					for j in res:
 						if(i[0]>j[4] and i[0]<j[5] and i[1]>j[10] and i[1]<j[11]):
 							set=(j[0],abs(abs(i[0]-(j[4]+j[5])/2)-abs(i[1]-(j[10]+j[11])/2)))
-							print(set)
+							
 							list1.append(set)
 					list1.sort(key = lambda x: x[1])
-					# print(list1)
+					# 
 					# print(list1[0][0])
 					if(len(list1)>0):
 						format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -876,26 +864,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 					# 	a=(weights_gold[i],weights_diamond[i])
 					# 	weights.append(a)
 					print("*************************************")
-					print(weights_platinum)
+					
 					print("*************************************")
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='...' AND Purity=19.2;'''
 					sql_command=format_str.format(metal='Platinum')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights_platinum:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i>j[4] and i<j[5]):
 								set=(j[0],abs(i-(j[4]+j[5])/2))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -939,26 +927,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 						a=(weights_platinum[i],weights_diamond[i])
 						weights.append(a)
 					print("*************************************")
-					print(weights)
+					
 					print("*************************************")
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='Diamond'AND Purity=18;'''
 					sql_command=format_str.format(metal='Platinum')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i[0]>j[4] and i[0]<j[5] and i[1]>j[10] and i[1]<j[11]):
 								set=(j[0],abs(abs(i[0]-(j[4]+j[5])/2)-abs(i[1]-(j[10]+j[11])/2)))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -994,26 +982,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 					# 	a=(weights_gold[i],weights_diamond[i])
 					# 	weights.append(a)
 					print("*************************************")
-					# print(weights_gold)
+					# 
 					print("*************************************")
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='...';'''
 					sql_command=format_str.format(metal='Platinum')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights_platinum:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i>j[4] and i<j[5]):
 								set=(j[0],abs(i-(j[4]+j[5])/2))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -1051,21 +1039,21 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='Diamond' AND Purity=18;'''
 					sql_command=format_str.format(metal='PLatinum')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i[0]>j[4] and i[0]<j[5] and i[1]>j[10] and i[1]<j[11]):
 								set=(j[0],abs(abs(i[0]-(j[4]+j[5])/2)-abs(i[1]-(j[10]+j[11])/2)))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -1110,26 +1098,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 					a=(weights_platinum[i],weights_diamond[i])
 					weights.append(a)
 				print("*************************************")
-				print(weights)
+				
 				print("*************************************")
 
 				format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='Diamond'AND Purity=18;'''
 				sql_command=format_str.format(metal='Platinum')
-				print(sql_command)
+				
 				self.cursor.execute(sql_command)
 				res=self.cursor.fetchall()
-				# print(res)
+				# 
 				for i in weights:
 					list1=[]
 					print(len(res))
-					print(i)
+					
 					for j in res:
 						if(i[0]>j[4] and i[0]<j[5] and i[1]>j[10] and i[1]<j[11]):
 							set=(j[0],abs(abs(i[0]-(j[4]+j[5])/2)-abs(i[1]-(j[10]+j[11])/2)))
-							print(set)
+							
 							list1.append(set)
 					list1.sort(key = lambda x: x[1])
-					# print(list1)
+					# 
 					# print(list1[0][0])
 					if(len(list1)>0):
 						format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -1180,26 +1168,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 					# 	a=(weights_platinum[i],weights_diamond[i])
 					# 	weights.append(a)
 					print("*************************************")
-					print(weights)
+					
 					print("*************************************")
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='Diamond';'''
 					sql_command=format_str.format(metal='White Metal')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i>j[10] and i<j[11]):
 								set=(j[0],abs(i-(j[10]+j[11])/2))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -1249,21 +1237,21 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='Diamond';'''
 					sql_command=format_str.format(metal='White Metal')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i>j[10] and i<j[11]):
 								set=(j[0],abs(i-(j[10]+j[11])/2))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -1311,26 +1299,26 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 					# 	a=(weights_platinum[i],weights_diamond[i])
 					# 	weights.append(a)
 					print("*************************************")
-					print(weights)
+					
 					print("*************************************")
 
 					format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Stone_Description='Diamond';'''
 					sql_command=format_str.format(metal='White Metal')
-					print(sql_command)
+					
 					self.cursor.execute(sql_command)
 					res=self.cursor.fetchall()
-					# print(res)
+					# 
 					for i in weights:
 						list1=[]
 						print(len(res))
-						print(i)
+						
 						for j in res:
 							if(i>j[10] and i<j[11]):
 								set=(j[0],abs(i-(j[10]+j[11])/2))
-								print(set)
+								
 								list1.append(set)
 						list1.sort(key = lambda x: x[1])
-						# print(list1)
+						# 
 						# print(list1[0][0])
 						if(len(list1)>0):
 							format_str='''SELECT *  FROM Items WHERE Item_id={id};'''
@@ -1398,7 +1386,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		sql_command=format_str.format(name=name)
 		self.cursor.execute(sql_command)
 		res=self.cursor.fetchone()
-		print(res)
+		
 
 		if(res is None):
 			self.tableWidget_2.cellWidget(self.curr_row,1).setText(self.lineEdit_48.text())
@@ -1413,7 +1401,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 			else:
 				self.tableWidget_2.cellWidget(self.curr_row,1).setText(self.lineEdit_48.text())
 				self.tableWidget_2.cellWidget(self.curr_row,12).lineEdit().setText(res[0])
-		print(name)
+		
 		self.autoUpdateTotals()
 
 	def autoMetalWt(self):
@@ -1748,7 +1736,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 	
 
 	def RatePopup(self):
-		self.popup=testselection.Ui_Selection(self,'Rates')
+		self.popup=Selection.Ui_Selection(self,'Rates')
 		self.popup.show()
     
 	def ReturnRate(self):
@@ -1769,7 +1757,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		self.lineEdit_53.setText(str(res[8]))
 
 	def FirmPopup(self):
-		self.popup=testselection.Ui_Selection(self,'Firms')
+		self.popup=Selection.Ui_Selection(self,'Firms')
 		self.popup.show()
 
 	def ReturnFirm(self):
@@ -1786,7 +1774,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		self.lineEdit_71.setText(res[2])
 
 	def CustomerPopup(self):
-		self.popup=testselection.Ui_Selection(self,'Auto_Valuation',1)
+		self.popup=Selection.Ui_Selection(self,'Auto_Valuation',1)
 		self.popup.show()
 
 	def ReturnCustomer(self):
@@ -1804,7 +1792,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		self.lineEdit_69.setText(res[29])
 
 	def ValuerPopup(self):
-		self.popup1=testselection.Ui_Selection(self,'Valuers')
+		self.popup1=Selection.Ui_Selection(self,'Valuers')
 		self.popup1.show()
 
 	def ReturnValuers(self):
@@ -1821,7 +1809,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		self.lineEdit_65.setText(res[2])
 
 	def ValuationPopup(self):
-		self.popup=testselection.Ui_Selection(self,'Auto_Valuation')
+		self.popup=Selection.Ui_Selection(self,'Auto_Valuation')
 		self.popup.show()
 
 		
@@ -1834,7 +1822,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		# while(t.is_alive()==True):
 		#     pass
 		
-		# self.popup=testselection.Ui_Selection('Valuation')
+		# self.popup=Selection.Ui_Selection('Valuation')
 		# print("C")
 		# # self.popup.exec()
 		# self.popup.show()
@@ -1914,7 +1902,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		self.cursor.execute(sql_command)
 		res=self.cursor.fetchall()
 		print("AAA")
-		print(res)
+		
 		# self.tableWidget_2clearContents()
 		# for i in range(self.tableWidget_2rowCount()+5):
 		#     self.tableWidget_2removeRow(i)
@@ -1953,11 +1941,11 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 
 	def fillRates(self):
 		date=self.dateEdit.lineEdit().text()
-		print(date)
+		
 		try:
 			format_str='''SELECT * FROM Rates WHERE From_Date='{date}';'''
 			sql_command=format_str.format(date=date)
-			print(sql_command)
+			
 			self.cursor.execute(sql_command)
 			res=self.cursor.fetchone()
 			self.lineEdit_48.setText(str(res[3]))
@@ -1975,7 +1963,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		self.cursor.execute(sql_command)
 		res=self.cursor.fetchall()
 		if(res[0][0]>1):
-			self.popup1=testselection.Ui_Selection(self,'Auto_Valuation',0,[],'V_Date',date)
+			self.popup1=Selection.Ui_Selection(self,'Auto_Valuation',0,[],'V_Date',date)
 			self.popup1.show()
 			# self.ValuationPopup(self,'Valuation',0,[],'Valuation_date',date)
 		else:
@@ -2063,7 +2051,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		self.cursor.execute(sql_command)
 		res=self.cursor.fetchall()
 		print("AAA")
-		print(res)
+		
 		# self.tableWidget_2clearContents()
 		# for i in range(self.tableWidget_2rowCount()+5):
 		#     self.tableWidget_2removeRow(i)
@@ -2321,7 +2309,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		# except:
 		#     valuation_date=self.comboBox_2.lineEdit().text()
 		V_Date=self.dateEdit_2.lineEdit().text()
-		print(V_Date)
+		
 		format_str='''SELECT * FROM Auto_Valuation WHERE V_Id={id};'''
 		sql_command=format_str.format(id=Ui_Valuation_Expert.val_id)
 		self.cursor.execute(sql_command)
@@ -2329,7 +2317,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		if(res is None):
 			QtWidgets.QMessageBox.warning(self,"Error","Please Save The Valuation First")
 		else:
-			print(res)
+			
 			id=res[0]
 			context={}
 			context={'Name':res[24],'Company':res[30],'Address':res[31],'Reg_No':res[25],'Date':res[1],'Customer_name':res[27],'customer_address':res[29],'OS_With':res[32],'Pupose':res[26],'rate_date':res[2]}
@@ -2346,8 +2334,8 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 				c=c+1
 			context['table_content']=contents
 			context['labels']=labels
-			print(context)
-			doc = DocxTemplate("template.docx")
+			
+			doc = DocxTemplate("/templates/template.docx")
 			doc.render(context)
 			filename="generated_doc(Auto) "+str(id)+".docx"
 			doc.save(filename)
@@ -2484,7 +2472,7 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 			elif(self.tableWidget_2.cellWidget(i,12).lineEdit().text()=='PLatinum'):
 				index='Platinum+Stone'
 			data[index].append(row)
-		print(data)
+		
 
 		for j in data:
 			for i in data[j]:
@@ -2540,1066 +2528,6 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		else:
 			self.lineEdit_73.setText(str(self.minPurity(gold)))
 			self.lineEdit_74.setText(str(self.minPurity(silver)))
-
-
-
-
-
-		# self.default()
-	#**********************************************************************************************    
-	#**********************************************************************************************
-	#This is more accurate but without diamond
-	# def ValuateGold1(self):
-	#     if(self.radioButton_5.isChecked()):
-	#         if(self.checkBox_4.isChecked()==0):
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_55.text())
-	#             qty=int(self.lineEdit_59.text())
-	#             gold_rate=float(self.lineEdit_48.text())
-
-	#             gold_amount=(Amount*percent)/100
-	#             gold_wt=(gold_amount*24)/(19.2*(gold_rate/10))
-	#             weights=np.random.dirichlet(np.ones(qty))*gold_wt
-	#             weights_ptr=0
-				
-	#             format_str='''SELECT MIN(Min_Wt),MAX(Max_Wt) FROM ITEMS WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='...';'''
-	#             sql_command=format_str.format(metal='Gold',group='Sets')
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchone()
-	#             print(res)
-	#             while(all(i >= res[0] and i<=res[1] for i in weights)==0):
-	#                 weights=np.random.dirichlet(np.ones(qty))*gold_wt
-
-	#             # # label: before
-	#             # for i in weights:
-	#             #     if(i<res[0] or i>res[1]):
-	#             #         weights=np.random.dirichlet(np.ones(qty))*gold_wt
-	#             #         # i=weights[0]
-	#             #         # goto before
-				
-	#             print(weights)
-
-
-	#             format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='...';'''
-	#             sql_command=format_str.format(metal='Gold',group='Sets')
-	#             print(sql_command)
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchall()
-	#             print(res)
-	#             # random_weights=[]
-	#             i=1
-	#             selected=[]
-	#             checked=[]
-	#             while(i<=qty):
-	#                 a=random.randint(1,len(res)-1)
-	#                 print(a)
-	#                 if(a in selected):
-	#                     pass
-	#                 else:
-	#                     # i=i+1
-	#                     print(weights[weights_ptr])
-	#                     print("BWYHFCMSFBBHC")
-	#                     if(weights[weights_ptr]>res[a][4] and weights[weights_ptr]<res[a][5] and a not in checked):
-	#                         print(res[a])
-	#                         print(weights[weights_ptr])
-	#                         self.fillRowWithoutStone(res[a],weights[weights_ptr])
-	#                         selected.append(i)
-	#                         # weights.pop(weights_ptr)
-	#                         res.pop(a)
-	#                         i=i+1
-	#                         weights_ptr=weights_ptr+1
-	#                         checked.append(a)
-
-	#             self.autoUpdateTotals()
-	#     elif(self.radioButton_6.isChecked()):
-	#         if(self.checkBox_4.isChecked()==0):
-	#             # Amount=int(self.lineEdit_54.text())
-	#             gold_wt=int(self.lineEdit_55.text())
-	#             qty=int(self.lineEdit_59.text())
-	#             gold_rate=float(self.lineEdit_48.text())
-
-	#             # gold_amount=(Amount*percent)/100
-	#             # gold_wt=gold_amount/(gold_rate/10)
-	#             weights=np.random.dirichlet(np.ones(qty))*gold_wt
-	#             weights_ptr=0
-	#             format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='...';'''
-	#             sql_command=format_str.format(metal='Gold',group='Sets')
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchall()
-	#             # random_weights=[]
-	#             i=1
-	#             selected=[]
-	#             while(i<=qty):
-	#                 a=random.randint(1,len(res))
-	#                 if(a in selected):
-	#                     pass
-	#                 else:
-	#                     # i=i+1
-	#                     print(weights[weights_ptr])
-	#                     if(weights[weights_ptr]>res[a][4] and weights[weights_ptr]<res[a][5]):
-	#                         self.fillRowWithoutStone(res[a],weights[weights_ptr])
-	#                         selected.append(i)
-	#                         # weights.pop(weights_ptr)
-	#                         res.pop(a)
-	#                         i=i+1
-	#                         weights_ptr=weights_ptr+1
-	#             self.autoUpdateTotals()
-	#     else:
-	#         if(self.checkBox_4.isChecked()==0):
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_55.text())
-	#             qty=int(self.lineEdit_59.text())
-	#             gold_rate=float(self.lineEdit_48.text())
-
-	#             gold_amount=(Amount*percent)/100
-	#             gold_wt=gold_amount/(gold_rate/10)
-	#             weights=np.random.dirichlet(np.ones(qty))*gold_wt
-	#             weights_ptr=0
-	#             format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='.%';'''
-	#             sql_command=format_str.format(metal='Gold',group=self.comboBox_7.lineEdit().text())
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchall()
-	#             # random_weights=[]
-	#             i=1
-	#             selected=[]
-	#             while(i<=qty):
-	#                 a=random.randint(1,len(res))
-	#                 if(a in selected):
-	#                     pass
-	#                 else:
-	#                     # i=i+1
-	#                     if(weights[weights_ptr]>res[a][4] and weights[weights_ptr]<res[a][5]):
-	#                         self.fillRowWithoutStone(res[a],weights[weights_ptr])
-	#                         selected.append(i)
-	#                         weights.pop(weights_ptr)
-	#                         res.pop(a)
-	#                         i=i+1
-	#                         weights_ptr=weights_ptr+1
-
-
-	# def ValuateSilver1(self):
-	#     if(self.radioButton_5.isChecked()):
-	#         if(self.checkBox_3.isChecked()==0):
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_56.text())
-	#             qty=int(self.lineEdit_60.text())
-	#             silver_rate=float(self.lineEdit_49.text())
-
-	#             silver_amount=(Amount*percent)/100
-	#             silver_wt=silver_amount/(silver_rate/1000)
-	#             weights=np.random.dirichlet(np.ones(qty))*silver_wt
-	#             weights_ptr=0
-	#             format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='...';'''
-	#             sql_command=format_str.format(metal='Silver',group='Sets')
-	#             print(sql_command)
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchall()
-	#             print(res)
-	#             # random_weights=[]
-	#             i=1
-	#             selected=[]
-	#             while(i<=qty):
-	#                 a=random.randint(1,len(res)-1)
-	#                 if(a in selected):
-	#                     pass
-	#                 else:
-	#                     # i=i+1
-	#                     if(weights[weights_ptr]>res[a][4] and weights[weights_ptr]<res[a][5]):
-	#                         self.fillRowWithoutStone(res[a],weights[weights_ptr])
-	#                         selected.append(i)
-	#                         # weights.pop(weights_ptr)
-	#                         res.pop(a)
-	#                         i=i+1
-	#                         weights_ptr=weights_ptr+1
-	#     elif(self.radioButton_6.isChecked()):
-	#         if(self.checkBox_3.isChecked()==0):
-	#             # Amount=int(self.lineEdit_54.text())
-	#             silver_wt=int(self.lineEdit_56.text())
-	#             qty=int(self.lineEdit_60.text())
-	#             silver_rate=float(self.lineEdit_49.text())
-
-	#             # gold_amount=(Amount*percent)/100
-	#             # gold_wt=gold_amount/(gold_rate/10)
-	#             weights=np.random.dirichlet(np.ones(qty))*silver_wt
-	#             weights_ptr=0
-	#             format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='.%';'''
-	#             sql_command=format_str.format(metal='Silver',group=self.comboBox_7.lineEdit().text())
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchall()
-	#             # random_weights=[]
-	#             i=1
-	#             selected=[]
-	#             while(i<=qty):
-	#                 a=random.randint(1,len(res))
-	#                 if(a in selected):
-	#                     pass
-	#                 else:
-	#                     # i=i+1
-	#                     if(weights[weights_ptr]>res[a][4] and weights[weights_ptr]<res[a][5]):
-	#                         self.fillRowWithoutStone(res[a],weights[weights_ptr])
-	#                         selected.append(i)
-	#                         weights.pop(weights_ptr)
-	#                         res.pop(a)
-	#                         i=i+1
-	#                         weights_ptr=weights_ptr+1
-	#     else:
-	#         if(self.checkBox_3.isChecked()==0):
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_56.text())
-	#             qty=int(self.lineEdit_60.text())
-	#             silver_rate=float(self.lineEdit_49.text())
-
-	#             silver_amount=(Amount*percent)/100
-	#             silver_wt=silver_amount/(silver_rate/1000)
-	#             weights=np.random.dirichlet(np.ones(qty))*silver_wt
-	#             weights_ptr=0
-	#             format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='.%';'''
-	#             sql_command=format_str.format(metal='Silver',group=self.comboBox_7.lineEdit().text())
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchall()
-	#             # random_weights=[]
-	#             i=1
-	#             selected=[]
-	#             while(i<=qty):
-	#                 a=random.randint(1,len(res))
-	#                 if(a in selected):
-	#                     pass
-	#                 else:
-	#                     # i=i+1
-	#                     if(weights[weights_ptr]>res[a][4] and weights[weights_ptr]<res[a][5]):
-	#                         self.fillRowWithoutStone(res[a],weights[weights_ptr])
-	#                         selected.append(i)
-	#                         weights.pop(weights_ptr)
-	#                         res.pop(a)
-	#                         i=i+1
-	#                         weights_ptr=weights_ptr+1
-
-	# def ValuatePlatinum1(self):
-	#     if(self.radioButton_5.isChecked()):
-	#         if(self.checkBox_2.isChecked()==0):
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_57.text())
-	#             qty=int(self.lineEdit_61.text())
-	#             platinum_rate=float(self.lineEdit_50.text())
-
-	#             platinum_amount=(Amount*percent)/100
-	#             platinum_wt=platinum_amount/(platinum_rate/10)
-	#             weights=np.random.dirichlet(np.ones(qty))*platinum_wt
-	#             weights_ptr=0
-	#             format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='.%';'''
-	#             sql_command=format_str.format(metal='Platinum',group=self.comboBox_7.lineEdit().text())
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchall()
-	#             # random_weights=[]
-	#             i=1
-	#             selected=[]
-	#             while(i<=qty):
-	#                 a=random.randint(1,len(res))
-	#                 if(a in selected):
-	#                     pass
-	#                 else:
-	#                     # i=i+1
-	#                     if(weights[weights_ptr]>res[a][4] and weights[weights_ptr]<res[a][5]):
-	#                         self.fillRowWithoutStone(res[a],weights[weights_ptr])
-	#                         selected.append(i)
-	#                         weights.pop(weights_ptr)
-	#                         res.pop(a)
-	#                         i=i+1
-	#                         weights_ptr=weights_ptr+1
-	#     elif(self.radioButton_6.isChecked()):
-	#         if(self.checkBox_2.isChecked()==0):
-	#             # Amount=int(self.lineEdit_54.text())
-	#             platinum_wt=int(self.lineEdit_57.text())
-	#             qty=int(self.lineEdit_61.text())
-	#             platinum_rate=float(self.lineEdit_50.text())
-
-	#             # gold_amount=(Amount*percent)/100
-	#             # gold_wt=gold_amount/(gold_rate/10)
-	#             weights=np.random.dirichlet(np.ones(qty))*platinum_wt
-	#             weights_ptr=0
-	#             format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='.%';'''
-	#             sql_command=format_str.format(metal='Platinum',group=self.comboBox_7.lineEdit().text())
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchall()
-	#             # random_weights=[]
-	#             i=1
-	#             selected=[]
-	#             while(i<=qty):
-	#                 a=random.randint(1,len(res))
-	#                 if(a in selected):
-	#                     pass
-	#                 else:
-	#                     # i=i+1
-	#                     if(weights[weights_ptr]>res[a][4] and weights[weights_ptr]<res[a][5]):
-	#                         self.fillRowWithoutStone(res[a],weights[weights_ptr])
-	#                         selected.append(i)
-	#                         weights.pop(weights_ptr)
-	#                         res.pop(a)
-	#                         i=i+1
-	#                         weights_ptr=weights_ptr+1
-	#     else:
-	#         if(self.checkBox_2.isChecked()==0):
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_57.text())
-	#             qty=int(self.lineEdit_61.text())
-	#             platinum_rate=float(self.lineEdit_50.text())
-
-	#             platinum_amount=(Amount*percent)/100
-	#             platinum_wt=platinum_amount/(platinum_rate/10)
-	#             weights=np.random.dirichlet(np.ones(qty))*platinum_wt
-	#             weights_ptr=0
-	#             format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='.%';'''
-	#             sql_command=format_str.format(metal='Platinum',group=self.comboBox_7.lineEdit().text())
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchall()
-	#             # random_weights=[]
-	#             i=1
-	#             selected=[]
-	#             while(i<=qty):
-	#                 a=random.randint(1,len(res))
-	#                 if(a in selected):
-	#                     pass
-	#                 else:
-	#                     # i=i+1
-	#                     if(weights[weights_ptr]>res[a][4] and weights[weights_ptr]<res[a][5]):
-	#                         self.fillRowWithoutStone(res[a],weights[weights_ptr])
-	#                         selected.append(i)
-	#                         weights.pop(weights_ptr)
-	#                         res.pop(a)
-	#                         i=i+1
-	#                         weights_ptr=weights_ptr+1
-
-
-	# def ValuateWhiteMetal1(self):
-	#     if(self.radioButton_5.isChecked()):
-	#         if(self.checkBox.isChecked()):
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_57.text())
-	#             qty=int(self.lineEdit_61.text())
-	#             white_metal_rate=float(self.lineEdit_50.text())
-
-	#             platinum_amount=(Amount*percent)/100
-	#             platinum_wt=platinum_amount/(white_metal_rate/10)
-	#             weights=np.random.dirichlet(np.ones(qty))*platinum_wt
-	#             weights_ptr=0
-	#             format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='.%';'''
-	#             sql_command=format_str.format(metal='Platinum',group=self.comboBox_7.lineEdit().text())
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchall()
-	#             # random_weights=[]
-	#             i=1
-	#             selected=[]
-	#             while(i<=qty):
-	#                 a=random.randint(1,len(res))
-	#                 if(a in selected):
-	#                     pass
-	#                 else:
-	#                     # i=i+1
-	#                     if(weights[weights_ptr]>res[a][4] and weights[weights_ptr]<res[a][5]):
-	#                         self.fillRowWithoutStone(res[a],weights[weights_ptr])
-	#                         selected.append(i)
-	#                         weights.pop(weights_ptr)
-	#                         res.pop(a)
-	#                         i=i+1
-	#                         weights_ptr=weights_ptr+1
-	#     elif(self.radioButton_6.isChecked()):
-	#         if(self.checkBox_2.isChecked()==0):
-	#             # Amount=int(self.lineEdit_54.text())
-	#             platinum_wt=int(self.lineEdit_57.text())
-	#             qty=int(self.lineEdit_61.text())
-	#             platinum_rate=float(self.lineEdit_50.text())
-
-	#             # gold_amount=(Amount*percent)/100
-	#             # gold_wt=gold_amount/(gold_rate/10)
-	#             weights=np.random.dirichlet(np.ones(qty))*platinum_wt
-	#             weights_ptr=0
-	#             format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='.%';'''
-	#             sql_command=format_str.format(metal='Platinum',group=self.comboBox_7.lineEdit().text())
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchall()
-	#             # random_weights=[]
-	#             i=1
-	#             selected=[]
-	#             while(i<=qty):
-	#                 a=random.randint(1,len(res))
-	#                 if(a in selected):
-	#                     pass
-	#                 else:
-	#                     # i=i+1
-	#                     if(weights[weights_ptr]>res[a][4] and weights[weights_ptr]<res[a][5]):
-	#                         self.fillRowWithoutStone(res[a],weights[weights_ptr])
-	#                         selected.append(i)
-	#                         weights.pop(weights_ptr)
-	#                         res.pop(a)
-	#                         i=i+1
-	#                         weights_ptr=weights_ptr+1
-	#     else:
-	#         if(self.checkBox_2.isChecked()==0):
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_57.text())
-	#             qty=int(self.lineEdit_61.text())
-	#             platinum_rate=float(self.lineEdit_50.text())
-
-	#             platinum_amount=(Amount*percent)/100
-	#             platinum_wt=platinum_amount/(platinum_rate/10)
-	#             weights=np.random.dirichlet(np.ones(qty))*platinum_wt
-	#             weights_ptr=0
-	#             format_str='''SELECT * FROM Items WHERE Metal='{metal}' AND Groups<>'{group}' AND Stone_Description='.%';'''
-	#             sql_command=format_str.format(metal='Platinum',group=self.comboBox_7.lineEdit().text())
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchall()
-	#             # random_weights=[]
-	#             i=1
-	#             selected=[]
-	#             while(i<=qty):
-	#                 a=random.randint(1,len(res))
-	#                 if(a in selected):
-	#                     pass
-	#                 else:
-	#                     # i=i+1
-	#                     if(weights[weights_ptr]>res[a][4] and weights[weights_ptr]<res[a][5]):
-	#                         self.fillRowWithoutStone(res[a],weights[weights_ptr])
-	#                         selected.append(i)
-	#                         weights.pop(weights_ptr)
-	#                         res.pop(a)
-	#                         i=i+1
-	#                         weights_ptr=weights_ptr+1
-
-
-
-
-
-
-
-
-
-
-
-
-	#********************************************************************************************    
-	#********************************************************************************************  
-
-	# def ValuateSilver(self):
-	#     if(self.radioButton_5.isChecked()):
-	#         if(self.checkBox_3.isChecked()==0):
-
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_56.text())
-	#             qty=int(self.lineEdit_60.text())
-	#             silver_rate=float(self.lineEdit_49.text())
-
-	#             silver_amount=(Amount*percent)/100
-	#             silver_wt=gold_amount/(gold_rate/1000)
-	#             a=np.random.dirichlet(np.ones(qty))*silver_wt
-	#             list1=[]
-
-	#             for i in a:
-	#                 format_str='''SELECT TOP 1 * FROM Items WHERE Metal='Silver' AND Groups<>'{group}' AND Stone_Description='.%' AND IsActive=1 ORDER BY ABS((Min_Wt+Max_wt)/2-{input});'''
-	#                 sql_command=format_str.format(group=self.comboBox_7.lineEdit().text(),input=i)
-	#                 self.cursor.execute(sql_command)
-	#                 res=self.cursor.fetchone()
-	#                 if(res[0] in list1):
-	#                     pass
-	#                 else:
-	#                     list1.append(res[0])
-	#                     self.createRow()
-	#                     self.tableWidget_2_2.cellWidget(self.tableWidget_2_2.rowCount()-1,0).setText(res[1])
-	#                     self.tableWidget_2_2.cellWidget(self.tableWidget_2_2.rowCount()-1,1).setText(silver_rate)
-						
-	#                     self.tableWidget_2_2.cellWidget(self.tableWidget_2_2.rowCount()-1,2).setText(str(res[7]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,3).setText(str(1))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,4).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,5).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,6).setText(str((silver_rate*res[7]*(res[4]+res[5])/2)/24))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,7).setText(str(res[8]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,8).setText(str(0.0))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,9).setText(str(0.0))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,10).setText(str(0.0))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,11).setText(str(silver_rate*res[7]*(res[4]+res[5])/2)/24))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,12).lineEdit().setText(res[6])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,13).lineEdit().setText(str(res[3]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,14).lineEdit().setText(str(res[10]))
-	#                     self.autoTotal()
-				
-
-	#         else:
-
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_55.text())
-	#             qty=int(self.lineEdit_59.text())
-	#             silver_rate=float(self.lineEdit_49.text())
-
-	#             silver_amount=(Amount*percent)/100
-	#             silver_wt=gold_amount/(gold_rate/1000)
-	#             a=np.random.dirichlet(np.ones(qty))*silver_wt
-	#             list1=[]
-
-	#             for i in a:
-	#                 format_str='''SELECT TOP 1 * FROM Items WHERE Metal='Silver' AND Groups<>'{group}' AND IsActive=1 ORDER BY ABS((Min_Wt+Max_wt)/2-{input});'''
-	#                 sql_command=format_str.format(group=self.comboBox_7.lineEdit().text(),input=i)
-	#                 self.cursor.execute(sql_command)
-	#                 res=self.cursor.fetchone()
-	#                 if(res[0] in list1):
-	#                     pass
-	#                 else:
-	#                     list1.append(res[0])
-	#                     self.createRow()
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,1).setText(str(silver_rate))
-						
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,2).setText(str(res[7]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,3).setText(str(1))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,4).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,5).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,6).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,7).setText(str(res[8]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,8).setText(str((res[9]+res[10])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,9).setText(str(self.lineEdit_51.text()))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,10).setText(str(int(self.lineEdit_51.text()*(res[9]+res[10])/2)))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,11).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,12).lineEdit().setText(res[6])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,13).lineEdit().setText(str(res[3]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,14).lineEdit().setText(str(res[10]))
-	#                     self.autoTotal()
-
-	#     elif(self.radioButton_6.isChecked()):
-	#         if(self.checkBox_4.isChecked()==0):
-
-	#             # Amount=int(self.lineEdit_54.text())
-	#             wt=int(self.lineEdit_55.text())
-	#             qty=int(self.lineEdit_59.text())
-	#             gold_rate=float(self.lineEdit_48.text())
-
-	#             # gold_amount=(Amount*percent)/100
-	#             # gold_wt=gold_amount/(gold_rate/10)
-	#             a=np.random.dirichlet(np.ones(qty))*gold_wt
-	#             list1=[]
-
-	#             for i in a:
-	#                 format_str='''SELECT TOP 1 * FROM Items WHERE Metal='Gold' AND Groups<>'{group}' AND Stone_Description='.%' AND IsActive=1 ORDER BY ABS((Min_Wt+Max_wt)/2-{input});'''
-	#                 sql_command=format_str.format(group=self.comboBox_7.lineEdit().text(),input=i)
-	#                 self.cursor.execute(sql_command)
-	#                 res=self.cursor.fetchone()
-	#                 if(res[0] in list1):
-	#                     pass
-	#                 else:
-	#                     list1.append(res[0])
-	#                     self.createRow()
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,1).setText(self.lineEdit_48.text())
-						
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,2).setText(str(res[7]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,3).setText(str(1))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,4).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,5).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,6).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,7).setText(str(res[8]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,8).setText(str(0.0))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,9).setText(str(0.0))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,10).setText(str(0.0))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,11).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,12).lineEdit().setText(res[6])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,13).lineEdit().setText(str(res[3]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,14).lineEdit().setText(str(res[10]))
-	#                     self.autoTotal()
-	#         else:
-
-	#             # Amount=int(self.lineEdit_54.text())
-	#             wt=int(self.lineEdit_55.text())
-	#             qty=int(self.lineEdit_59.text())
-	#             gold_rate=float(self.lineEdit_48.text())
-
-	#             # gold_amount=(Amount*percent)/100
-	#             # gold_wt=gold_amount/(gold_rate/10)
-	#             a=np.random.dirichlet(np.ones(qty))*gold_wt
-	#             list1=[]
-
-	#             for i in a:
-	#                 format_str='''SELECT TOP 1 * FROM Items WHERE Metal='Gold' AND Groups<>'{group}' AND IsActive=1 ORDER BY ABS((Min_Wt+Max_wt)/2-{input});'''
-	#                 sql_command=format_str.format(group=self.comboBox_7.lineEdit().text(),input=i)
-	#                 self.cursor.execute(sql_command)
-	#                 res=self.cursor.fetchone()
-	#                 if(res[0] in list1):
-	#                     pass
-	#                 else:
-	#                     list1.append(res[0])
-	#                     self.createRow()
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,1).setText(self.lineEdit_48.text())
-						
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,2).setText(str(res[7]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,3).setText(str(1))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,4).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,5).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,6).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,7).setText(str(res[8]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,8).setText(str((res[9]+res[10])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,9).setText(str(self.lineEdit_51.text()))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,10).setText(str(int(self.lineEdit_51.text()*(res[9]+res[10])/2)))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,11).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,12).lineEdit().setText(res[6])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,13).lineEdit().setText(str(res[3]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,14).lineEdit().setText(str(res[10]))
-	#                     self.autoTotal()
-
-	#     elif(self.radioButton.isChecked()):
-	#         if(self.checkBox_4.isChecked()==0):
-
-	#         Amount=int(self.lineEdit_54.text())
-	#         percent=int(self.lineEdit_55.text())
-	#         qty=int(self.lineEdit_59.text())
-	#         gold_rate=float(self.lineEdit_48.text())
-
-	#         gold_amount=(Amount*percent)/100
-	#         gold_wt=gold_amount/(gold_rate/10)
-	#         a=np.random.dirichlet(np.ones(qty))*gold_wt
-	#         list1=[]
-
-	#         for i in a:
-	#             format_str='''SELECT TOP 1 * FROM Items WHERE Metal='Gold' AND Groups<>'{group}' AND Stone_Description='.%' AND IsActive=1 ORDER BY ABS((Min_Wt+Max_wt)/2-{input});'''
-	#             sql_command=format_str.format(group=self.comboBox_7.lineEdit().text(),input=i)
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchone()
-	#             if(res[0] is in list1):
-	#                 pass
-	#             else:
-	#                 list1.append(res[0])
-	#                 self.createRow()
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,1).setText(self.lineEdit_48.text())
-					
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,2).setText(str(res[7]))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,3).setText(str(1))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,4).setText(str((res[4]+res[5])/2)
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,5).setText(str((res[4]+res[5])/2))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,6).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,7).setText(str(res[8]))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,8).setText(str(0.0))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,9).setText(str(0.0))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,10).setText(str(0.0))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,11).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,12).lineEdit().setText(res[6])
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,13).lineEdit().setText(str(res[3]))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,14).lineEdit().setText(str(res[10]))
-	#                 self.autoTotal()
-	#         else:
-
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_55.text())
-	#             qty=int(self.lineEdit_59.text())
-	#             gold_rate=float(self.lineEdit_48.text())
-
-	#             gold_amount=(Amount*percent)/100
-	#             gold_wt=gold_amount/(gold_rate/10)
-	#             a=np.random.dirichlet(np.ones(qty))*gold_wt
-	#             list1=[]
-
-	#             for i in a:
-
-	#                 format_str='''SELECT TOP 1 * FROM Items WHERE Metal='Gold' AND Groups<>'{group}' AND IsActive=1 ORDER BY ABS((Min_Wt+Max_wt)/2-{input});'''
-	#                 sql_command=format_str.format(group=self.comboBox_7.lineEdit().text(),input=i)
-	#                 self.cursor.execute(sql_command)
-	#                 res=self.cursor.fetchone()
-	#                 if(res[0] is in list1):
-	#                     pass
-	#                     # goto a
-	#                 else:
-	#                     list1.append(res[0])
-	#                     self.createRow()
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,1).setText(self.lineEdit_48.text())
-						
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,2).setText(str(res[7]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,3).setText(str(1))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,4).setText(str((res[4]+res[5])/2)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,5).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,6).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,7).setText(str(res[8]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,8).setText(str((res[9]+res[10])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,9).setText(str(self.lineEdit_51.text()))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,10).setText(str(int(self.lineEdit_51.text()*(res[9]+res[10])/2)))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,11).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,12).lineEdit().setText(res[6])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,13).lineEdit().setText(str(res[3]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,14).lineEdit().setText(str(res[10]))
-	#                     self.autoTotal()
-
-	#     else:
-	#         pass
-
-	# def ValuateGold(self):
-		# if(self.radioButton_5.isChecked()):
-		#     if(self.checkBox_4.isChecked()==0):
-
-		#         Amount=int(self.lineEdit_54.text())
-		#         percent=int(self.lineEdit_55.text())
-		#         qty=int(self.lineEdit_59.text())
-		#         gold_rate=float(self.lineEdit_48.text())
-
-		#         gold_amount=(Amount*percent)/100
-		#         gold_wt=gold_amount/(gold_rate/10)
-		#         a=np.random.dirichlet(np.ones(qty))*gold_wt
-	#             list1=[]
-
-	#             for i in a:
-	#                 format_str='''SELECT TOP 1 * FROM Items WHERE Metal='Gold' AND Groups<>'{group}' AND Stone_Description='.%' AND IsActive=1 ORDER BY ABS((Min_Wt+Max_wt)/2-{input});'''
-	#                 sql_command=format_str.format(group=self.comboBox_7.lineEdit().text(),input=i)
-	#                 self.cursor.execute(sql_command)
-	#                 res=self.cursor.fetchone()
-	#                 if(res[0] is in list1):
-	#                     pass
-	#                 else:
-	#                     list1.append(res[0])
-	#                     self.createRow()
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,1).setText(self.lineEdit_48.text())
-						
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,2).setText(str(res[7]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,3).setText(str(1))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,4).setText(str((res[4]+res[5])/2)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,5).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,6).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,7).setText(str(res[8]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,8).setText(str(0.0))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,9).setText(str(0.0))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,10).setText(str(0.0))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,11).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,12).lineEdit().setText(res[6])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,13).lineEdit().setText(str(res[3]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,14).lineEdit().setText(str(res[10]))
-	#                     self.autoTotal()
-				
-
-
-	#         else:
-
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_55.text())
-	#             qty=int(self.lineEdit_59.text())
-	#             gold_rate=float(self.lineEdit_48.text())
-
-	#             gold_amount=(Amount*percent)/100
-	#             gold_wt=gold_amount/(gold_rate/10)
-	#             a=np.random.dirichlet(np.ones(qty))*gold_wt
-	#             list1=[]
-
-	#             for i in a:
-	#                 format_str='''SELECT TOP 1 * FROM Items WHERE Metal='Gold' AND Groups<>'{group}' AND IsActive=1 ORDER BY ABS((Min_Wt+Max_wt)/2-{input});'''
-	#                 sql_command=format_str.format(group=self.comboBox_7.lineEdit().text(),input=i)
-	#                 self.cursor.execute(sql_command)
-	#                 res=self.cursor.fetchone()
-	#                 if(res[0] is in list1):
-	#                     pass
-	#                 else:
-	#                     list1.append(res[0])
-	#                     self.createRow()
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,1).setText(self.lineEdit_48.text())
-						
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,2).setText(str(res[7]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,3).setText(str(1))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,4).setText(str((res[4]+res[5])/2)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,5).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,6).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,7).setText(str(res[8]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,8).setText(str((res[9]+res[10])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,9).setText(str(self.lineEdit_51.text()))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,10).setText(str(int(self.lineEdit_51.text()*(res[9]+res[10])/2)))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,11).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,12).lineEdit().setText(res[6])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,13).lineEdit().setText(str(res[3]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,14).lineEdit().setText(str(res[10]))
-	#                     self.autoTotal()
-
-	#     elif(self.radioButton_6.isChecked()):
-	#         if(self.checkBox_4.isChecked()==0):
-
-	#             # Amount=int(self.lineEdit_54.text())
-	#             wt=int(self.lineEdit_55.text())
-	#             qty=int(self.lineEdit_59.text())
-	#             gold_rate=float(self.lineEdit_48.text())
-
-	#             # gold_amount=(Amount*percent)/100
-	#             # gold_wt=gold_amount/(gold_rate/10)
-	#             a=np.random.dirichlet(np.ones(qty))*gold_wt
-	#             list1=[]
-
-	#             for i in a:
-	#                 format_str='''SELECT TOP 1 * FROM Items WHERE Metal='Gold' AND Groups<>'{group}' AND Stone_Description='.%' AND IsActive=1 ORDER BY ABS((Min_Wt+Max_wt)/2-{input});'''
-	#                 sql_command=format_str.format(group=self.comboBox_7.lineEdit().text(),input=i)
-	#                 self.cursor.execute(sql_command)
-	#                 res=self.cursor.fetchone()
-	#                 if(res[0] is in list1):
-	#                     pass
-	#                 else:
-	#                     list1.append(res[0])
-	#                     self.createRow()
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,1).setText(self.lineEdit_48.text())
-						
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,2).setText(str(res[7]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,3).setText(str(1))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,4).setText(str((res[4]+res[5])/2)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,5).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,6).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,7).setText(str(res[8]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,8).setText(str(0.0))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,9).setText(str(0.0))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,10).setText(str(0.0))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,11).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,12).lineEdit().setText(res[6])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,13).lineEdit().setText(str(res[3]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,14).lineEdit().setText(str(res[10]))
-	#                     self.autoTotal()
-	#         else:
-
-	#             # Amount=int(self.lineEdit_54.text())
-	#             wt=int(self.lineEdit_55.text())
-	#             qty=int(self.lineEdit_59.text())
-	#             gold_rate=float(self.lineEdit_48.text())
-
-	#             # gold_amount=(Amount*percent)/100
-	#             # gold_wt=gold_amount/(gold_rate/10)
-	#             a=np.random.dirichlet(np.ones(qty))*gold_wt
-	#             list1=[]
-
-	#             for i in a:
-	#                 format_str='''SELECT TOP 1 * FROM Items WHERE Metal='Gold' AND Groups<>'{group}' AND IsActive=1 ORDER BY ABS((Min_Wt+Max_wt)/2-{input});'''
-	#                 sql_command=format_str.format(group=self.comboBox_7.lineEdit().text(),input=i)
-	#                 self.cursor.execute(sql_command)
-	#                 res=self.cursor.fetchone()
-	#                 if(res[0] is in list1):
-	#                     pass
-	#                 else:
-	#                     list1.append(res[0])
-	#                     self.createRow()
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,1).setText(self.lineEdit_48.text())
-						
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,2).setText(str(res[7]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,3).setText(str(1))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,4).setText(str((res[4]+res[5])/2)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,5).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,6).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,7).setText(str(res[8]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,8).setText(str((res[9]+res[10])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,9).setText(str(self.lineEdit_51.text()))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,10).setText(str(int(self.lineEdit_51.text()*(res[9]+res[10])/2)))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,11).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,12).lineEdit().setText(res[6])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,13).lineEdit().setText(str(res[3]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,14).lineEdit().setText(str(res[10]))
-	#                     self.autoTotal()
-
-	#     elif(self.radioButton.isChecked()):
-	#         if(self.checkBox_4.isChecked()==0):
-
-	#         Amount=int(self.lineEdit_54.text())
-	#         percent=int(self.lineEdit_55.text())
-	#         qty=int(self.lineEdit_59.text())
-	#         gold_rate=float(self.lineEdit_48.text())
-
-	#         gold_amount=(Amount*percent)/100
-	#         gold_wt=gold_amount/(gold_rate/10)
-	#         a=np.random.dirichlet(np.ones(qty))*gold_wt
-	#         list1=[]
-
-	#         for i in a:
-	#             format_str='''SELECT TOP 1 * FROM Items WHERE Metal='Gold' AND Groups<>'{group}' AND Stone_Description='.%' AND IsActive=1 ORDER BY ABS((Min_Wt+Max_wt)/2-{input});'''
-	#             sql_command=format_str.format(group=self.comboBox_7.lineEdit().text(),input=i)
-	#             self.cursor.execute(sql_command)
-	#             res=self.cursor.fetchone()
-	#             if(res[0] is in list1):
-	#                 pass
-	#             else:
-	#                 list1.append(res[0])
-	#                 self.createRow()
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,1).setText(self.lineEdit_48.text())
-					
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,2).setText(str(res[7]))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,3).setText(str(1))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,4).setText(str((res[4]+res[5])/2)
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,5).setText(str((res[4]+res[5])/2))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,6).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,7).setText(str(res[8]))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,8).setText(str(0.0))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,9).setText(str(0.0))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,10).setText(str(0.0))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,11).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,12).lineEdit().setText(res[6])
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,13).lineEdit().setText(str(res[3]))
-	#                 self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,14).lineEdit().setText(str(res[10]))
-	#                 self.autoTotal()
-	#         else:
-
-	#             Amount=int(self.lineEdit_54.text())
-	#             percent=int(self.lineEdit_55.text())
-	#             qty=int(self.lineEdit_59.text())
-	#             gold_rate=float(self.lineEdit_48.text())
-
-	#             gold_amount=(Amount*percent)/100
-	#             gold_wt=gold_amount/(gold_rate/10)
-	#             a=np.random.dirichlet(np.ones(qty))*gold_wt
-	#             list1=[]
-
-	#             for i in a:
-
-	#                 format_str='''SELECT TOP 1 * FROM Items WHERE Metal='Gold' AND Groups<>'{group}' AND IsActive=1 ORDER BY ABS((Min_Wt+Max_wt)/2-{input});'''
-	#                 sql_command=format_str.format(group=self.comboBox_7.lineEdit().text(),input=i)
-	#                 self.cursor.execute(sql_command)
-	#                 res=self.cursor.fetchone()
-	#                 if(res[0] is in list1):
-	#                     pass
-	#                     # goto a
-	#                 else:
-	#                     list1.append(res[0])
-	#                     self.createRow()
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,0).setText(res[1])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,1).setText(self.lineEdit_48.text())
-						
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,2).setText(str(res[7]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,3).setText(str(1))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,4).setText(str((res[4]+res[5])/2)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,5).setText(str((res[4]+res[5])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,6).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,7).setText(str(res[8]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,8).setText(str((res[9]+res[10])/2))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,9).setText(str(self.lineEdit_51.text()))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,10).setText(str(int(self.lineEdit_51.text()*(res[9]+res[10])/2)))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,11).setText(str((int(self.lineEdit_48.text())*res[7]*(res[4]+res[5])/2)/24)
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,12).lineEdit().setText(res[6])
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,13).lineEdit().setText(str(res[3]))
-	#                     self.tableWidget_2.cellWidget(self.tableWidget_2.rowCount()-1,14).lineEdit().setText(str(res[10]))
-	#                     self.autoTotal()
-						
-	#     else:
-	#         pass
-
-
-
-	# def save_btn(self):
-	#     rate_date=self.comboBox.lineEdit().text()
-	#     try:
-	#         a,valuation_date=self.comboBox_2.lineEdit().text().split("   ")
-	#     except:
-	#         valuation_date=self.comboBox_2.lineEdit().text()
-	#     G_rate=float(self.lineEdit_48.text())
-	#     S_rate=float(self.lineEdit_49.text())
-	#     P_rate=float(self.lineEdit_50.text())
-	#     D_rate=float(self.lineEdit_51.text())
-	#     Soverign_rate=float(self.lineEdit_52.text())
-	#     Coin_rate=float(self.lineEdit_53.text())
-	#     Amount=float(self.lineEdit_54.text())
-	#     if(self.radioButton_5.isChecked()):
-	#         mode='Amount'
-	#     elif(self.radioButton_6.isChecked()):
-	#         mode='Weight'
-	#     else:
-	#         mode='Percent'
-	#     if(self.checkBox_4.isChecked()):
-	#         G_Diamond=1
-	#     else:
-	#         G_Diamond=0
-	#     G_precent=float(self.lineEdit_55.text())
-	#     G_Qty=float(self.lineEdit_59.text())
-	#     if(self.checkBox_3.isChecked()):
-	#         S_Diamond=1
-	#     else:
-	#         S_Diamond=0
-	#     S_precent=float(self.lineEdit_56.text())
-	#     S_Qty=float(self.lineEdit_60.text())
-	#     if(self.checkBox_2.isChecked()):
-	#         P_Diamond=1
-	#     else:
-	#         P_Diamond=0
-	#     P_precent=float(self.lineEdit_57.text())
-	#     P_Qty=float(self.lineEdit_61.text())
-	#     if(self.checkBox.isChecked()):
-	#         W_Diamond=1
-	#     else:
-	#         W_Diamond=0
-	#     W_precent=float(self.lineEdit_58.text())
-	#     W_Qty=float(self.lineEdit_62.text())
-	#     group=self.comboBox_7.lineEdit().text()
-	#     V_Name=self.lineEdit_64.text()
-	#     V_Reg_No=self.lineEdit_65.text()
-	#     Purpose=self.lineEdit_66.text()
-	#     Customer_name=self.lineEdit_67.text()
-	#     Customer_Pan=self.lineEdit_68.text()
-	#     customer_address=self.lineEdit_69.text()
-	#     F_Name=self.lineEdit_70.text()
-	#     F_Address=self.lineEdit_71.text()
-	#     OS_With=self.lineEdit_72.text()
-	#     Gold_total=float(self.lineEdit_17.text())
-	#     Gold_gross=float(self.lineEdit_19.text())
-	#     Gold_metal=float(self.lineEdit_25.text())
-	#     Gold_value=float(self.lineEdit_22.text())
-	#     Silver_total=float(self.lineEdit_18.text())
-	#     Silver_gross=float(self.lineEdit_20.text())
-	#     Silver_metal=float(self.lineEdit_26.text())
-	#     Silver_value=float(self.lineEdit_23.text())
-	#     Diamond_total=float(self.lineEdit_16.text())
-	#     Diamond_gross=float(self.lineEdit_21.text())
-	#     # G_metal=float(self.lineEdit_25.text())
-	#     Diamond_value=float(self.lineEdit_24.text())
-	#     Grand_Total=float(self.lineEdit_27.text())
-	#     G_Purity=float(self.lineEdit_73.text())
-	#     S_Purity=float(self.lineEdit_74.text())
-
-	#     format_str='''UPDATE Valuation SET Valuation_date='{valuation_date}',Rate_date='{rate_date}',Gold_rate={gold},Silver_rate={silver},Platinum_rate={platinum},Soverign_rate={soverign},Coin_rate={coin},Diamond_rate={diamond},Valuer_name='{V_Name}',Valuer_reg_no={V_Reg_No},Purpose='{V_Purpose}',Customer_name='{Customer_name}',Customer_Pan={Customer_Pan},customer_address='{customer_address}',Firm_name='{F_Name}',Firm_address='{F_Address}',OS='{OS_With}',Gold_total={Gold_total},Gold_gross={Gold_gross},Gold_metal={Gold_metal},Gold_value={Gold_value},Silver_total={Silver_total},Silver_gross={Silver_gross},Silver_metal={Silver_metal},Silver_value={Silver_value},Stone_total={Diamond_total},Stone_gross={Diamond_gross},Stone_value={Diamond_value},Grand_Total={Grand_Total} WHERE Valuation_id={id};'''
-	#     sql_command=format_str.format(id=Ui_Valuation.val_id,valuation_date=valuation_date,rate_date=rate_date,gold=gold,silver=silver,platinum=platinum,diamond=diamond,soverign=soverign,coin=coin,V_Name=V_Name,V_Reg_No=V_Reg_No,V_Purpose=V_Purpose,Customer_name=Customer_name,Customer_Pan=Customer_Pan,customer_address=customer_address,F_Name=F_Name,F_Address=F_Address,OS_With=OS_With,Gold_total=Gold_total,Gold_gross=Gold_gross,Gold_metal=Gold_metal,Gold_value=Gold_value,Silver_total=Silver_total,Silver_gross=Silver_gross,Silver_metal=Silver_metal,Silver_value=Silver_value,Diamond_total=Diamond_total,Diamond_gross=Diamond_gross,Diamond_value=Diamond_value,Grand_Total=Grand_Total)
-	#     self.connection.commit()
-	#     self.cursor.execute(sql_command)
-
-	#     format_str='''DELETE FROM Products WHERE Valuation_id={id};'''
-	#     sql_command=format_str.format(id=Ui_Valuation.val_id)
-	#     self.cursor.execute(sql_command)
-
-	#     for i in range(self.tableWidget_2.rowCount()):
-	#         # for j in range(self.tableWidget_2.colorCount()):
-	#         description=self.tableWidget_2.cellWidget(i,0).text()
-	#         metal_rate=float(self.tableWidget_2.cellWidget(i,1).text())
-	#         purity=float(self.tableWidget_2.cellWidget(i,2).text())
-	#         qty=float(self.tableWidget_2.cellWidget(i,3).text())
-	#         gross_wt=float(self.tableWidget_2.cellWidget(i,4).text())
-	#         metal_wt=float(self.tableWidget_2.cellWidget(i,5).text())
-	#         metal_value=float(self.tableWidget_2.cellWidget(i,6).text())
-	#         s_description=self.tableWidget_2.cellWidget(i,7).text()
-	#         s_wt=float(self.tableWidget_2.cellWidget(i,8).text())
-	#         s_rate=float(self.tableWidget_2.cellWidget(i,9).text())
-	#         s_value=float(self.tableWidget_2.cellWidget(i,10).text())
-	#         total=float(self.tableWidget_2.cellWidget(i,11).text())
-	#         metal=self.tableWidget_2.cellWidget(i,12).lineEdit().text()
-	#         item_ratewise=self.tableWidget_2.cellWidget(i,13).lineEdit().text()
-	#         stone_weightwise=self.tableWidget_2.cellWidget(i,14).lineEdit().text()
-	#         if(self.tableWidget_2.cellWidget(i,15).isChecked()):
-	#             is_soverign=1
-	#         else:
-	#             is_soverign=0
-			
-	#         format_str='''INSERT INTO Products(Valuation_Id,Description,Rate,Purity,Quantity,Gross_Wt,Metal_Wt,Metal_Value,Stone_Description,Stone_Wt,Stone_Rate,Stone_Value,Total_Value,Metal,Item_Ratewise,Stone_Weightwise,Is_Soverign) VALUES ({id},'{item_description}',{rate},{purity},{quantity},{gross_wt},{metal_weight},{metal_value},'{stone_description}',{stone_wt},{stone_rate},{stone_value},{total_value},'{metal}','{item_ratewise}','{stone_weightwise}',{is_soverign});'''
-	#         sql_command=format_str.format(id=Ui_Valuation.val_id,item_description=description,rate=metal_rate,purity=purity,quantity=qty,gross_wt=gross_wt,metal_weight=metal_wt,metal_value=metal_value,stone_description=s_description,stone_wt=s_wt,stone_rate=s_rate,stone_value=s_value,total_value=total,metal=metal,item_ratewise=item_ratewise,stone_weightwise=stone_weightwise,is_soverign=is_soverign)
-	#         self.cursor.execute(sql_command)
-
-	#     QtWidgets.QMessageBox.information(self, 'Success', 'Valuation Updated')
-	#     # self.default()
-
-				
-	# def closeEvent(self, event):
-	# 	if(self.a==1):
-	# 		self.close
-	# 	# if not self.authenticated:
-	# 	buttonReply = QMessageBox.question(self, 'PyQt5 message', "Do you want to close the window?", QMessageBox.Yes | QMessageBox.No,QMessageBox.No)
-	# 	print(int(buttonReply))
-	# 	if buttonReply == QMessageBox.Yes:
-	# 		self.close()
-	# 	if buttonReply == QMessageBox.No:
-	# 		event.ignore()
-
-	# def keyPressEvent(self, event):
-	# 	if not event.key() == QtCore.Qt.Key_Escape:
-	# 		super(Ui_Valuation_Expert, self).keyPressEvent(event)
 
 	def setupUi(self, MainWindow):
 		MainWindow.setObjectName("MainWindow")
@@ -4190,47 +3118,47 @@ class Ui_Valuation_Expert(QtWidgets.QMainWindow):
 		MainWindow.addToolBar(QtCore.Qt.LeftToolBarArea, self.toolBar)
 		self.actionFirm = QtWidgets.QAction(MainWindow)
 		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap("icons8-organization-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon.addPixmap(QtGui.QPixmap("./icons/icons8-organization-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.actionFirm.setIcon(icon)
 		self.actionFirm.setObjectName("actionFirm")
 		self.actionValuer = QtWidgets.QAction(MainWindow)
 		icon1 = QtGui.QIcon()
-		icon1.addPixmap(QtGui.QPixmap("icons8-user-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon1.addPixmap(QtGui.QPixmap("./icons/icons8-user-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.actionValuer.setIcon(icon1)
 		self.actionValuer.setObjectName("actionValuer")
 		self.actionGroups = QtWidgets.QAction(MainWindow)
 		icon2 = QtGui.QIcon()
-		icon2.addPixmap(QtGui.QPixmap("icons8-list-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon2.addPixmap(QtGui.QPixmap("./icons/icons8-list-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.actionGroups.setIcon(icon2)
 		self.actionGroups.setObjectName("actionGroups")
 		self.actionItems = QtWidgets.QAction(MainWindow)
 		icon3 = QtGui.QIcon()
-		icon3.addPixmap(QtGui.QPixmap("icons8-ring-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon3.addPixmap(QtGui.QPixmap("./icons/icons8-ring-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.actionItems.setIcon(icon3)
 		self.actionItems.setObjectName("actionItems")
 		self.actionMarket_Rates = QtWidgets.QAction(MainWindow)
 		icon4 = QtGui.QIcon()
-		icon4.addPixmap(QtGui.QPixmap("icons8-us-dollar-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon4.addPixmap(QtGui.QPixmap("./icons/icons8-us-dollar-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.actionMarket_Rates.setIcon(icon4)
 		self.actionMarket_Rates.setObjectName("actionMarket_Rates")
 		self.actionValuation = QtWidgets.QAction(MainWindow)
 		icon5 = QtGui.QIcon()
-		icon5.addPixmap(QtGui.QPixmap("icons8-contract-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon5.addPixmap(QtGui.QPixmap("./icons/icons8-contract-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.actionValuation.setIcon(icon5)
 		self.actionValuation.setObjectName("actionValuation")
 		self.actionChange_Password = QtWidgets.QAction(MainWindow)
 		icon6 = QtGui.QIcon()
-		icon6.addPixmap(QtGui.QPixmap("icons8-password-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon6.addPixmap(QtGui.QPixmap("./icons/icons8-password-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.actionChange_Password.setIcon(icon6)
 		self.actionChange_Password.setObjectName("actionChange_Password")
 		self.actionAbout = QtWidgets.QAction(MainWindow)
 		icon7 = QtGui.QIcon()
-		icon7.addPixmap(QtGui.QPixmap("icons8-about-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon7.addPixmap(QtGui.QPixmap("./icons/icons8-about-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.actionAbout.setIcon(icon7)
 		self.actionAbout.setObjectName("actionAbout")
 		self.actionExit = QtWidgets.QAction(MainWindow)
 		icon8 = QtGui.QIcon()
-		icon8.addPixmap(QtGui.QPixmap("icons8-exit-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		icon8.addPixmap(QtGui.QPixmap("./icons/icons8-exit-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 		self.actionExit.setIcon(icon8)
 		self.actionExit.setObjectName("actionExit")
 		self.toolBar.addAction(self.actionFirm)

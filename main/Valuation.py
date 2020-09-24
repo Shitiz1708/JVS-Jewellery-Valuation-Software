@@ -15,8 +15,8 @@ import Valuers
 import Change_Password
 import Products
 import Valuation
-import testselection
-import testValuationExpert
+import Selection
+import ValuationExpert
 import SplitValuation
 from docxtpl import DocxTemplate
 import datetime
@@ -81,34 +81,16 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         self.connection.close()
 
     def databaseAccess(self):
-        self.connection = sqlite3.connect("MAINDB.db")
+        self.connection = sqlite3.connect("./dbs/MAINDB.db")
         self.cursor=self.connection.cursor()
     
 
     def default(self):
-        # for i in range(self.tableWidget.rowCount()):
-        #     self.tableWidget.removeRow(i)
         self.tableWidget.setRowCount(0)
         self.createRow()
         date=datetime.date.today().strftime('%d-%m-%y')
         self.dateEdit.lineEdit().setText(date)
         self.dateEdit_2.lineEdit().setText(date)
-
-        # sql_command='''SELECT * FROM Rates ;'''
-        # self.cursor.execute(sql_command)
-        # res=self.cursor.fetchall()
-        # for i in res:
-        #     self.comboBox.addItem(str(i[1]))
-        
-        # for i in range(self.comboBox_2.count()):
-        #     self.comboBox_2.removeItem(i)
-        
-        # sql_command='''SELECT * FROM Valuation ;'''
-        # self.cursor.execute(sql_command)
-        # res=self.cursor.fetchall()
-        # self.comboBox_2.clear()
-        # for i in res:
-        #     self.comboBox_2.addItem(str(i[0])+"   " + str(i[1]))
         
         self.lineEdit.setText(str(0))
         self.lineEdit_2.setText(str(0))
@@ -284,11 +266,10 @@ class Ui_Valuation(QtWidgets.QMainWindow):
 
     def fillRates(self):
         date=self.dateEdit.lineEdit().text()
-        print(date)
         try:
             format_str='''SELECT * FROM Rates WHERE From_Date='{date}';'''
             sql_command=format_str.format(date=date)
-            print(sql_command)
+
             self.cursor.execute(sql_command)
             res=self.cursor.fetchone()
             self.lineEdit.setText(str(res[3]))
@@ -306,24 +287,13 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         self.cursor.execute(sql_command)
         res=self.cursor.fetchall()
         if(res[0][0]>1):
-            self.popup1=testselection.Ui_Selection(self,'Valuation',0,[],'Valuation_date',date)
+            self.popup1=Selection.Ui_Selection(self,'Valuation',0,[],'Valuation_date',date)
             self.popup1.show()
             # self.ValuationPopup(self,'Valuation',0,[],'Valuation_date',date)
         else:
             self.fillValuation()
     
     def fillValuation(self):
-        # print("ABCBABCBABC")
-        # id,date=text.split('   ')
-        # sql_command='''SELECT * FROM Valuation ;'''
-        # self.cursor.execute(sql_command)
-        # res=self.cursor.fetchall()
-        # count=0
-        # for i in res:
-        #     if(i[1]==date):
-        #         count=count+1
-        
-        # if(count>1):
         date=self.dateEdit_2.lineEdit().text()
         try:
             format_str='''SELECT * FROM Valuation WHERE Valuation_date='{date}';'''
@@ -365,12 +335,8 @@ class Ui_Valuation(QtWidgets.QMainWindow):
             self.cursor.execute(sql_command)
             res=self.cursor.fetchall()
             print("AAA")
-            print(res)
-            # self.tableWidget.clearContents()
-            # for i in range(self.tableWidget.rowCount()+5):
-            #     self.tableWidget.removeRow(i)
+
             self.tableWidget.setRowCount(0)
-            # self.tableWidget.setColumnCount(0)
             c=0
             print(self.tableWidget.rowCount())
             for i in res:
@@ -404,30 +370,9 @@ class Ui_Valuation(QtWidgets.QMainWindow):
             pass
             # QtWidgets.QMessageBox.warning(self, 'Error', 'Valuation Does Not Exist')
 
-        
-        # c=0
-        # for i in res:
-        #     self.tableWidget.insertRow(c)
-        #     self.tableWidget.setItem(c,0,QTableWidgetItem(i[2]))
-        #     self.tableWidget.setItem(c,1,QTableWidgetItem(str(i[3])))
-        #     self.tableWidget.setItem(c,2,QTableWidgetItem(str(i[4])))
-        #     self.tableWidget.setItem(c,3,QTableWidgetItem(str(i[5])))
-        #     self.tableWidget.setItem(c,4,QTableWidgetItem(str(i[6])))
-        #     self.tableWidget.setItem(c,5,QTableWidgetItem(str(i[7])))
-        #     self.tableWidget.setItem(c,6,QTableWidgetItem(str(i[8])))
-        #     self.tableWidget.setItem(c,7,QTableWidgetItem(i[9]))
-        #     self.tableWidget.setItem(c,8,QTableWidgetItem(i[10]))
-        #     self.tableWidget.setItem(c,9,QTableWidgetItem(str(i[11])))
-        #     self.tableWidget.setItem(c,10,QTableWidgetItem(str(i[12])))
-        #     self.tableWidget.setItem(c,11,QTableWidgetItem(str(i[13])))
-        #     self.tableWidget.setItem(c,12,QTableWidgetItem(str(i[14])))
-        #     self.tableWidget.setItem(c,13,QTableWidgetItem(i[15]))
-        #     self.tableWidget.setItem(c,14,QTableWidgetItem(i[16]))
-        #     self.tableWidget.setItem(c,14,QTableWidgetItem(i[17]))
-        #     self.tableWidget.setItem(c,15,QTableWidgetItem(str(i[18])))
 
     def RatePopup(self):
-        self.popup=testselection.Ui_Selection(self,'Rates')
+        self.popup=Selection.Ui_Selection(self,'Rates')
         self.popup.show()
     
     def ReturnRate(self):
@@ -448,7 +393,7 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         self.lineEdit_6.setText(str(res[8]))
 
     def FirmPopup(self):
-        self.popup=testselection.Ui_Selection(self,'Firms')
+        self.popup=Selection.Ui_Selection(self,'Firms')
         self.popup.show()
     
     def ReturnFirm(self):
@@ -466,7 +411,7 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         self.lineEdit_12.setCursorPosition(0)
     
     def CustomerPopup(self):
-        self.popup=testselection.Ui_Selection(self,'Valuation',1)
+        self.popup=Selection.Ui_Selection(self,'Valuation',1)
         self.popup.show()
     
     def ReturnCustomer(self):
@@ -484,7 +429,7 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         self.lineEdit_15.setText(res[14])
 
     def ValuerPopup(self):
-        self.popup1=testselection.Ui_Selection(self,'Valuers')
+        self.popup1=Selection.Ui_Selection(self,'Valuers')
         self.popup1.show()
     
     def ReturnValuers(self):
@@ -501,7 +446,7 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         self.lineEdit_9.setText(res[2])
     
     def ValuationPopup(self):
-        self.popup=testselection.Ui_Selection(self,'Valuation')
+        self.popup=Selection.Ui_Selection(self,'Valuation')
         self.popup.show()
 
         
@@ -514,7 +459,7 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         # while(t.is_alive()==True):
         #     pass
         
-        # self.popup=testselection.Ui_Selection('Valuation')
+        # self.popup=Selection.Ui_Selection('Valuation')
         # print("C")
         # # self.popup.exec()
         # self.popup.show()
@@ -564,7 +509,6 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         self.cursor.execute(sql_command)
         res=self.cursor.fetchall()
         print("AAA")
-        print(res)
         # for i in range(self.tableWidget.rowCount()+5):
         #     self.tableWidget.removeRow(i)
         self.tableWidget.setRowCount(0)
@@ -619,7 +563,6 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         sql_command=format_str.format(name=name)
         self.cursor.execute(sql_command)
         res=self.cursor.fetchone()
-        print(res)
 
         if(res is None):
             self.tableWidget.cellWidget(self.curr_row,1).setText(self.lineEdit.text())
@@ -634,7 +577,6 @@ class Ui_Valuation(QtWidgets.QMainWindow):
             else:
                 self.tableWidget.cellWidget(self.curr_row,1).setText(self.lineEdit.text())
                 self.tableWidget.cellWidget(self.curr_row,12).lineEdit().setText(res[0])
-        print(name)
         self.autoUpdateTotals()
     
     def autoMetalWt(self):
@@ -969,7 +911,7 @@ class Ui_Valuation(QtWidgets.QMainWindow):
     
     def OpenExpert(self):
         self.close()
-        self.expert=testValuationExpert.Ui_Valuation_Expert()
+        self.expert=ValuationExpert.Ui_Valuation_Expert()
         self.expert.show()
 
     
@@ -1083,13 +1025,7 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         
     
     def Document(self):
-        # date=self.comboBox.lineEdit().text()
-        # try:
-        #     a,valuation_date=self.comboBox_2.lineEdit().text().split("   ")
-        # except:
-        #     valuation_date=self.comboBox_2.lineEdit().text()
         valuation_date=self.dateEdit_2.lineEdit().text()
-        print(valuation_date)
         format_str='''SELECT * FROM Valuation WHERE Valuation_id={id};'''
         sql_command=format_str.format(id=Ui_Valuation.val_id)
         self.cursor.execute(sql_command)
@@ -1097,7 +1033,7 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         if(res is None):
             QtWidgets.QMessageBox.warning(self,"Error","Please Save The Valuation First")
         else:
-            print(res)
+
             id=res[0]
             p=inflect.engine()
             context={}
@@ -1115,8 +1051,8 @@ class Ui_Valuation(QtWidgets.QMainWindow):
                 c=c+1
             context['table_content']=contents
             context['labels']=labels
-            print(context)
-            doc = DocxTemplate("template.docx")
+
+            doc = DocxTemplate("/templates/template.docx")
             doc.render(context)
             filename="generated_doc_"+str(id)+".docx"
             doc.save(filename)
@@ -1138,13 +1074,7 @@ class Ui_Valuation(QtWidgets.QMainWindow):
 
 
     def Rough_Document(self):
-        # date=self.comboBox.lineEdit().text()
-        # try:
-        #     a,valuation_date=self.comboBox_2.lineEdit().text().split("   ")
-        # except:
-        #     valuation_date=self.comboBox_2.lineEdit().text()
         valuation_date=self.dateEdit_2.lineEdit().text()
-        print(valuation_date)
         format_str='''SELECT * FROM Valuation WHERE Valuation_id={id};'''
         sql_command=format_str.format(id=Ui_Valuation.val_id)
         self.cursor.execute(sql_command)
@@ -1152,7 +1082,7 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         if(res is None):
             QtWidgets.QMessageBox.warning(self,"Error","Please Save The Valuation First")
         else:
-            print(res)
+
             id=res[0]
             p=inflect.engine()
             context={}
@@ -1170,8 +1100,8 @@ class Ui_Valuation(QtWidgets.QMainWindow):
                 c=c+1
             context['table_content']=contents
             context['labels']=labels
-            print(context)
-            doc = DocxTemplate("Rough_Template.docx")
+
+            doc = DocxTemplate("/templates/Rough_Template.docx")
             doc.render(context)
             filename="generated_doc_Rough_"+str(id)+".docx"
             doc.save(filename)
@@ -1635,47 +1565,47 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         MainWindow.addToolBar(QtCore.Qt.LeftToolBarArea, self.toolBar)
         self.actionFirm = QtWidgets.QAction(MainWindow)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("icons8-organization-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("./icons/icons8-organization-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionFirm.setIcon(icon)
         self.actionFirm.setObjectName("actionFirm")
         self.actionValuer = QtWidgets.QAction(MainWindow)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("icons8-user-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("./icons/icons8-user-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionValuer.setIcon(icon1)
         self.actionValuer.setObjectName("actionValuer")
         self.actionGroups = QtWidgets.QAction(MainWindow)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("icons8-list-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap("./icons/icons8-list-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionGroups.setIcon(icon2)
         self.actionGroups.setObjectName("actionGroups")
         self.actionItems = QtWidgets.QAction(MainWindow)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("icons8-ring-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap("./icons/icons8-ring-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionItems.setIcon(icon3)
         self.actionItems.setObjectName("actionItems")
         self.actionMarket_Rates = QtWidgets.QAction(MainWindow)
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("icons8-us-dollar-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap("./icons/icons8-us-dollar-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionMarket_Rates.setIcon(icon4)
         self.actionMarket_Rates.setObjectName("actionMarket_Rates")
         self.actionValuation = QtWidgets.QAction(MainWindow)
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("icons8-contract-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap("./icons/icons8-contract-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionValuation.setIcon(icon5)
         self.actionValuation.setObjectName("actionValuation")
         self.actionChange_Password = QtWidgets.QAction(MainWindow)
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("icons8-password-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap("./icons/icons8-password-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionChange_Password.setIcon(icon6)
         self.actionChange_Password.setObjectName("actionChange_Password")
         self.actionAbout = QtWidgets.QAction(MainWindow)
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap("icons8-about-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap("./icons/icons8-about-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionAbout.setIcon(icon7)
         self.actionAbout.setObjectName("actionAbout")
         self.actionExit = QtWidgets.QAction(MainWindow)
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap("icons8-exit-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon8.addPixmap(QtGui.QPixmap("./icons/icons8-exit-50.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionExit.setIcon(icon8)
         self.actionExit.setObjectName("actionExit")
         self.toolBar.addAction(self.actionFirm)
@@ -1831,19 +1761,6 @@ class Ui_Valuation(QtWidgets.QMainWindow):
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionExit.setToolTip(_translate("MainWindow", "Exit"))
         self.actionExit.setShortcut(_translate("MainWindow", "Esc"))
-
-    # def closeEvent(self, event):
-    #     # if not self.authenticated:
-    #     buttonReply = QMessageBox.question(self, 'PyQt5 message', "Do you want to close the window?", QMessageBox.Yes | QMessageBox.No,QMessageBox.No, QMessageBox.Cancel)
-    #     print(int(buttonReply))
-    #     if buttonReply == QMessageBox.Yes:
-    #         self.close()
-    #     if buttonReply == QMessageBox.No:
-    #         event.ignore()
-
-    # def keyPressEvent(self, event):
-    #     if not event.key() == QtCore.Qt.Key_Escape:
-    #         super(Ui_Valuation, self).keyPressEvent(event)
 
 
 

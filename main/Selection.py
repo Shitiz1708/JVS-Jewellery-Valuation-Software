@@ -19,11 +19,8 @@ except AttributeError:
         return QtWidgets.QApplication.translate(context, text, disambig)  
 
 class Ui_Selection(QtWidgets.QMainWindow):
-    # pressed=''
     def __init__(self,parent,table,c=0,columns=[],column='',a=0):
         QtWidgets.QMainWindow.__init__(self)
-        # self.pressed=''
-        print("ABC")
         self.databaseAccess()
         self.setupUi(self)
         self.parent=parent
@@ -37,10 +34,8 @@ class Ui_Selection(QtWidgets.QMainWindow):
         elif(self.c==0 and self.table=='Auto_Valuation'):
             self.ExpertDefault()
         elif(self.c==0 and self.table=='Rates'):
-            print(3)
             self.RatesDefault()
         elif(self.c==0 and self.table=='Valuers'):
-            print(3)
             self.ValuerDefault()
         elif(self.c==0):
             self.default()
@@ -48,7 +43,7 @@ class Ui_Selection(QtWidgets.QMainWindow):
             self.CustomerDefault()
     
     def databaseAccess(self):
-        self.connection = sqlite3.connect("MAINDB.db")
+        self.connection = sqlite3.connect("./dbs/MAINDB.db")
         self.cursor=self.connection.cursor()
 
     def __del__(self):
@@ -121,16 +116,12 @@ class Ui_Selection(QtWidgets.QMainWindow):
         self.cursor.execute(sql_command)
         
         res=self.cursor.fetchall()
-        print(res)
         c=0
         self.tableWidget.setRowCount(0)
         for i in res:
-            print("A")
             self.tableWidget.insertRow(c)
             self.tableWidget.setItem(c,0,QTableWidgetItem(str(i[0])))
             self.tableWidget.setItem(c,1,QTableWidgetItem((i[1])))
-            print(i[1])
-
             self.tableWidget.setItem(c,2,QTableWidgetItem(str(i[12])))
             self.tableWidget.setItem(c,3,QTableWidgetItem(str(i[14])))
             self.tableWidget.setItem(c,4,QTableWidgetItem(str(i[29])))
@@ -143,12 +134,6 @@ class Ui_Selection(QtWidgets.QMainWindow):
             self.connection.commit()
             c=c+1
         self.connection.commit()
-        
-        # for i in range(self.tableWidget.rowCount()):
-        #     row=[]
-        #     for j in range(self.tableWidget.columnCount()):
-        #         row.append(self.tableWidget.itemAt(i,j).text())
-        #     self.table_data.append(row)
 
     def ExpertDefault(self):
         self.columns=['Valuation Date','Customer Name','Customer Address','Valuation Amount',' Valuation Mode','Gold Total','Silver Total','Stone Total']
@@ -184,7 +169,6 @@ class Ui_Selection(QtWidgets.QMainWindow):
     
 
     def RatesDefault(self):
-        print(4)
         self.columns=['Rates_Id','Date','Gold','Silver','Platinum','Diamond','Soverign','Coin']
         c=0
         for i in self.columns:
@@ -197,9 +181,7 @@ class Ui_Selection(QtWidgets.QMainWindow):
         res=self.cursor.fetchall()
         c=0
         self.tableWidget.setRowCount(0)
-        print(5)
         for i in res:
-            print(6)
             self.tableWidget.insertRow(c)
             self.tableWidget.setItem(c,0,QTableWidgetItem(str(i[0])))
             self.tableWidget.setItem(c,1,QTableWidgetItem(str(i[1])))
@@ -215,17 +197,7 @@ class Ui_Selection(QtWidgets.QMainWindow):
             sql_command=format_str.format(a1=i[0],a2=i[1],a3=i[3],a4=i[4],a5=i[5],a6=i[6],a7=i[7],a8=i[8])
             self.cursor.execute(sql_command)
             c=c+1
-        print(7)
         self.connection.commit()
-        
-        # for i in range(self.tableWidget.rowCount()):
-        #     row=[]
-        #     for j in range(self.tableWidget.columnCount()):
-        #         row.append(self.tableWidget.itemAt(i,j).text())
-        #     self.table_data.append(row)
-
-
-
     
     def CustomerDefault(self):
         headerlist=['Id','Customer Name','Customer Pan No.','Customer Address']
@@ -239,7 +211,6 @@ class Ui_Selection(QtWidgets.QMainWindow):
         sql_command=format_str.format(table=self.table)
         self.cursor.execute(sql_command)
         res=self.cursor.fetchall()
-        print(res)
         c=0
         for i in res:
             self.tableWidget.insertRow(c)
@@ -286,7 +257,6 @@ class Ui_Selection(QtWidgets.QMainWindow):
             format_str='''SELECT * FROM {table} WHERE {column}='{data}';'''
             sql_command=format_str.format(table=self.table,column=self.column,data=self.a)
             self.cursor.execute(sql_command)
-            print(sql_command)
             res=self.cursor.fetchall()
             for row_number,row_data in enumerate(res):
                 self.tableWidget.insertRow(row_number)
@@ -295,33 +265,19 @@ class Ui_Selection(QtWidgets.QMainWindow):
     
 
     def search_btn(self):
-        print('SEARCh')
         search=self.lineEdit.text()
-        # format_str='''SELECT * FROM SearchTable WHERE c1 LIKE "%{search}%" OR c2 LIKE "%{search}%" OR c3 LIKE "%{search}%" OR c4 LIKE "%{search}%" OR c5 LIKE "%{search}%" OR c6 LIKE "%{search}%" OR c7 LIKE "%{search}%" OR c8 LIKE "%{search}%" OR c9 LIKE "%{search}%";'''
-        # sql_command=format_str.format(search=search)
-        # self.cursor.execute(sql_command)
-        # res=self.cursor.fetchall()
-        # self.tableWidget.setRowCount(0)
-        # for row_number,row_data in enumerate(res):
-        #         self.tableWidget.insertRow(row_number)
-        #         for col_number,col_data in enumerate(row_data):
-        #             self.tableWidget.setItem(row_number,col_number,QTableWidgetItem(str(col_data)))
         if(self.table=='Valuation' and self.c==0):
             format_str='''SELECT * FROM {table} WHERE Valuation_date LIKE '%{search}%' OR Valuation_id LIKE '%{search}%' OR Customer_name LIKE '%{search}%' OR Customer_address LIKE '%{search}%' OR Gold_total LIKE '%{search}%' OR Silver_total LIKE '%{search}%' OR Stone_total LIKE '%{search}%' OR Grand_Total LIKE '%{search}%';'''
             sql_command=format_str.format(table=self.table,search=search)
             self.cursor.execute(sql_command)
             
             res=self.cursor.fetchall()
-            print(res)
             c=0
             self.tableWidget.setRowCount(0)
             for i in res:
-                print("A")
                 self.tableWidget.insertRow(c)
                 self.tableWidget.setItem(c,0,QTableWidgetItem(str(i[0])))
                 self.tableWidget.setItem(c,1,QTableWidgetItem((i[1])))
-                print(i[1])
-
                 self.tableWidget.setItem(c,2,QTableWidgetItem(str(i[12])))
                 self.tableWidget.setItem(c,3,QTableWidgetItem(str(i[14])))
                 self.tableWidget.setItem(c,4,QTableWidgetItem(str(i[29])))
@@ -336,9 +292,7 @@ class Ui_Selection(QtWidgets.QMainWindow):
             res=self.cursor.fetchall()
             c=0
             self.tableWidget.setRowCount(0)
-            print(5)
             for i in res:
-                print(6)
                 self.tableWidget.insertRow(c)
                 self.tableWidget.setItem(c,0,QTableWidgetItem(str(i[0])))
                 self.tableWidget.setItem(c,1,QTableWidgetItem(str(i[1])))
@@ -398,7 +352,6 @@ class Ui_Selection(QtWidgets.QMainWindow):
             sql_command=format_str.format(table=self.table)
             self.cursor.execute(sql_command)
             res=self.cursor.fetchall()
-            print(res)
             c=0
             for i in res:
                 self.tableWidget.insertRow(c)
@@ -407,93 +360,6 @@ class Ui_Selection(QtWidgets.QMainWindow):
                 self.tableWidget.setItem(c,2,QTableWidgetItem(str(i[13])))
                 self.tableWidget.setItem(c,3,QTableWidgetItem(str(i[14])))
                 c=c+1
-
-        
-
-
-
-
-        
-
-            
-            
-
-
-    
-    # def default(self):
-    #     if(self.c==1):
-    #         header=['Customer_Name','Customer_Pan','Customer_Address']
-    #         c=0
-    #         for i in header:
-    #             self.tableWidget.insertColumn(c)
-    #             c=c+1
-    #         self.tableWidget.setHorizontalHeaderLabels(header)
-    #         format_str='''SELECT Customer_name,Customer_Pan,Customer_address FROM {table}'''
-    #         sql_command=format_str.format(table=self.table)
-    #         self.cursor.execute(sql_command)
-    #         res=self.cursor.fetchall()
-    #         for row_number,row_data in enumerate(res):
-    #             self.tableWidget.insertRow(row_number)
-    #             for col_number,col_data in enumerate(row_data):
-    #                 self.tableWidget.setItem(row_number,col_number,QTableWidgetItem(str(col_data)))
-        
-    #     else:
-    #         format_str='''PRAGMA table_info({table});'''
-    #         sql_command=format_str.format(table=self.table)
-    #         self.cursor.execute(sql_command)
-    #         res=self.cursor.fetchall()
-    #         print(res[1][1])
-    #         list1=[]
-    #         c=0
-    #         for i in res:
-    #             list1.append(i[1])
-    #             self.tableWidget.insertColumn(c)
-    #             # self.tableWidget.setHorizontalHeaderItem(c,QTableWidgetItem(i[1]))
-    #             c=c+1
-            
-    #         self.tableWidget.setHorizontalHeaderLabels(list1)
-    #         # self.tableWidget.setHorizontalHeaderLabels(str(res[0]))
-    #         format_str='''SELECT * FROM {table}'''
-    #         sql_command=format_str.format(table=self.table)
-    #         self.cursor.execute(sql_command)
-    #         res=self.cursor.fetchall()
-    #         for row_number,row_data in enumerate(res):
-    #             self.tableWidget.insertRow(row_number)
-    #             for col_number,col_data in enumerate(row_data):
-    #                 self.tableWidget.setItem(row_number,col_number,QTableWidgetItem(str(col_data)))
-    
-    def onTableClicked(self):
-        print("xdgfhgfcdxgrsdcfvghfdgs")
-        # print(text)
-        print(self.tableWidget.currentRow())
-        name=self.tableWidget.item(self.tableWidget.currentRow(),0).text()
-        print(name)
-        format_str='''UPDATE Popup SET Row='{text}';'''
-        sql_command=format_str.format(text=name)
-        print(sql_command)
-        self.cursor.execute(sql_command)
-        self.connection.commit()
-        if((self.table=='Valuation' or self.table=='Auto_Valuation') and self.c==0):
-            print("BEJFNCECNUCD JBCDJVC")
-            self.parent.ReturnValuation()
-        elif(self.table=='Firms'):
-            self.parent.ReturnFirm()
-        elif(self.table=='Valuers'):
-            self.parent.ReturnValuers()
-        elif(self.table=="Valuation" and self.c==1):
-            self.parent.ReturnCustomer()
-        elif(self.table=='Rates'):
-            self.parent.ReturnRate()
-        self.close()
-        # print(self.tableWidget.currentItem().text())
-        # self.pressed=self.tableWidget.currentItem().text()
-        # self.returnfunction()
-        # print("A")
-        # print(self.pressed)
-    
-    # def returnfunction(self):
-    #      Ui_Selection.pressed='ABC'
-            
 
 
     def setupUi(self, MainWindow):
@@ -542,12 +408,9 @@ class Ui_Selection(QtWidgets.QMainWindow):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        # self.lineEdit.clearFocus()
         self.pushButton.setFocus()
         self.tableWidget.cellDoubleClicked.connect(self.onTableClicked)
         self.pushButton.clicked.connect(self.search_btn)
-        # self.lineEdit.clearFocus(True)
-        # self.lineEdit.returnPressed.connect(self.search_btn)
         self.lineEdit.cursorPositionChanged.connect(self.search_btn)
 
         self.retranslateUi(MainWindow)
@@ -563,13 +426,4 @@ class Ui_Selection(QtWidgets.QMainWindow):
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     ex = Ui_Selection('Groups')
-#     # w = QtWidgets.QMainWindow()
-#     # print(ex.pressed)
-#     # print(Ui_Selection.pressed)
-    ex.show()
-#     print(Ui_Selection.pressed)
-
-#     # print(ex.pressed)
-#     # print(ex.pressed)
-#     # w.show()
     sys.exit(app.exec_())

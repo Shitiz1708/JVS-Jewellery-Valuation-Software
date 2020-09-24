@@ -35,8 +35,6 @@ class Ui_Products(QtWidgets.QMainWindow):
         self.diamond_rate=diamond
         self.soverign_rate=soverign
         self.coin=coin
-        print("++++++++++++")
-        print(name)
         if(name==''):
             pass
         else:
@@ -47,13 +45,10 @@ class Ui_Products(QtWidgets.QMainWindow):
     def CalledFromtable(self,name):
         # self.__init__(self,0,0,0,0,0,0,0)
         description=name
-        print(name)
-        print(type(name))
         format_str='''SELECT * FROM Products WHERE Description="{name}";'''
         sql_command=format_str.format(name=name)
         self.cursor.execute(sql_command)
         res = self.cursor.fetchone()
-        print(res)
         self.lineEdit.setText(str(res[2]))
         self.comboBox.lineEdit().setText(res[15])
         self.lineEdit_3.setText(str(res[3]))
@@ -73,11 +68,6 @@ class Ui_Products(QtWidgets.QMainWindow):
         else:
             pass
 
-
-
-
-
-
     def __del__(self):
         self.connection.commit()
         self.connection.close()
@@ -85,9 +75,9 @@ class Ui_Products(QtWidgets.QMainWindow):
         self.connection_1.close()
 
     def databaseAccess(self):
-        self.connection = sqlite3.connect("Valuation_1.db",timeout=10)
+        self.connection = sqlite3.connect("./dbs/Valuation_1.db",timeout=10)
         self.cursor=self.connection.cursor()
-        self.connection_1 = sqlite3.connect("Items.db")
+        self.connection_1 = sqlite3.connect("./dbs/Items.db")
         self.cursor_1=self.connection_1.cursor()
     
     def default(self):
@@ -117,10 +107,7 @@ class Ui_Products(QtWidgets.QMainWindow):
         self.cursor_1.execute(sql_command)
         res = self.cursor_1.fetchone()
         self.lineEdit.setText(str(res[1]))
-        # self.lineEdit_3.setText(str(res[3]))
         self.lineEdit_2.setText(str(res[7]))
-        # self.lineEdit_4.setText(str(res[12]))
-        # self.lineEdit_2.setText(str(res[7]))
         wt=int((res[4]+res[5])/2)
         self.lineEdit_6.setText(str(wt))
         self.lineEdit_11.setText(str(res[8]))
@@ -128,14 +115,6 @@ class Ui_Products(QtWidgets.QMainWindow):
         self.lineEdit_10.setText(str(wt_s))
         self.comboBox_3.lineEdit().setText(str(res[3]))
         self.comboBox_2.lineEdit().setText(str(res[9]))
-
-    # def getMetalRate(self,metal):
-    #     if(metal=='Gold'):
-    #         return self.gold_rate
-    #     elif(metal=='Silver'):
-    #         return self.silver_rate
-    #     else:
-    #         return self.platinum_rate
     
     def OnSelect(self,metal):
         if(metal=='Gold'):
@@ -233,73 +212,8 @@ class Ui_Products(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.information(self, 'Success', 'Item Updated Successfully')
             self.default()
             self.close()
-            # self.clear()
         return
         
-        
-
-
-    
-    # def new_btn(self):
-    #     item_description = self.lineEdit.text()
-    #     purity=int(self.lineEdit_2.text())
-    #     rate=int(self.lineEdit_3.text())
-    #     quantity=int(self.lineEdit_4.text())
-    #     gross_wt=int(self.lineEdit_5.text())
-    #     metal_weight=int(self.lineEdit_6.text())
-    #     stone_wt=gross_wt-metal_weight
-    #     self.lineEdit_10.setText(str(stone_wt))
-    #     metal=self.comboBox.lineEdit().text()
-    #     item_ratewise=self.comboBox_3.lineEdit().text()
-    #     stone_description = self.lineEdit_11.text()
-    #     stone_wt=int(self.lineEdit_10.text())
-    #     stone_rate = int(self.lineEdit_9.text())
-    #     stone_weightwise=self.comboBox_2.lineEdit().text()
-    #     if(self.checkBox.isChecked()):
-    #         is_soverign=1
-    #     else:
-    #         is_soverign=0
-        
-    #     if(item_ratewise=='Weightwise'):
-    #         metal_value=rate*metal_weight
-    #     else:
-    #         metal_weight=metal_weight*quantity
-    #         gross_wt=gross_wt*quantity
-    #         # self.lineEdit_5.setText(str(gross_wt))
-    #         # self.lineEdit_6.setText(str(metal_wt))
-    #         metal_value=rate*metal_weight
-
-    #     if(stone_weightwise=='Grams'):
-    #         stone_value=stone_rate*stone_wt
-    #     else:
-    #         stone_wt=stone_wt/5
-    #         stone_value=stone_rate*stone_wt
-
-    #     total_value=stone_value+metal_value
-        
-
-        # rate=self.getMetalRate(metal)
-
-
-    #     format_str='''SELECT * FROM Products WHERE Description="{name}";'''
-    #     sql_command=format_str.format(name=item_description)
-    #     self.cursor.execute(sql_command)
-    #     res = self.cursor.fetchone()
-    #     print (res)
-    #     if(res is None):
-            
-    #         format_str='''INSERT INTO Products(Valuation_id,Description,Rate,Purity,Quantity,Gross_Wt,Metal_Wt,Metal_Value,Stone_Description,Stone_Wt,Stone_Rate,Stone_Value,Total_Value,Metal,Item_Ratewise,Stone_Weightwise,Is_Soverign) VALUES ({id},'{item_description}',{rate},{purity},{quantity},{gross_wt},{metal_weight},{metal_value},'{stone_description}',{stone_wt},{stone_rate},{stone_value},{total_value},'{metal}','{item_ratewise}','{stone_weightwise}',{is_soverign});'''
-    #         sql_command=format_str.format(id=self.id,item_description=item_description,rate=rate,purity=purity,quantity=quantity,gross_wt=gross_wt,metal_weight=metal_weight,metal_value=metal_value,stone_description=stone_description,stone_wt=stone_wt,stone_rate=stone_rate,stone_value=stone_value,total_value=total_value,metal=metal,item_ratewise=item_ratewise,stone_weightwise=stone_weightwise,is_soverign=is_soverign)
-    #         self.cursor.execute(sql_command)
-    #         QtWidgets.QMessageBox.information(self, 'Success', 'New Item Created')
-    #         self.default()
-    #         # self.clear()
-    #     else:
-    #             QtWidgets.QMessageBox.warning(self, 'Error', 'Item Already Exists')
-    #             self.default()
-    #             # self.clear()
-    #             self.close()
-
     
     def search_btn(self):
         item_description=self.lineEdit_12.text()
